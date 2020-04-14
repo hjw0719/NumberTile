@@ -1,10 +1,15 @@
 #include "itemmodel.h"
-#include "util.h"
+#include <QDebug>
 
 ItemModel::ItemModel()
 {
     m_tRoles.insert(eTileNumber, "nNumber");
     m_tRoles.insert(eTileState, "eState");
+}
+
+ItemModel::~ItemModel()
+{
+    qDeleteAll(m_model);
 }
 
 int ItemModel::rowCount(const QModelIndex &parent) const
@@ -26,9 +31,9 @@ QVariant ItemModel::data(const QModelIndex &index, int role) const
         switch (role)
         {
         case eTileNumber:
-            return m_model.at(nIndex).number;
+            return m_model.at(nIndex)->getNumber();
         case eTileState:
-            return m_model.at(nIndex).eState;
+            return m_model.at(nIndex)->getTileState();
         default:
             return QVariant();
         }
@@ -40,18 +45,18 @@ QHash<int, QByteArray> ItemModel::roleNames() const
     return m_tRoles;
 }
 
-void ItemModel::setList(QList<Tile> &tList)
+void ItemModel::setList(QList<HTile *> &tList)
 {
     beginResetModel();
     m_model = tList;
     endResetModel();
 }
 
-Tile ItemModel::getData(const int nRow)
+HTile *ItemModel::getData(const int nRow)
 {
     if (m_model.count() <= nRow)
     {
-        return Tile();
+        return nullptr;
     }
     else
     {
@@ -59,15 +64,16 @@ Tile ItemModel::getData(const int nRow)
     }
 }
 
-void ItemModel::editItem(const int &nIndex, const Tile &tTile)
+void ItemModel::editItem(const int &nIndex, const ETileState &eTileState, int nNumber)
 {
     beginResetModel();
     qDebug() << Q_FUNC_INFO << nIndex;
     if (!m_model.isEmpty())
     {
+        HTile *tile = m_model.at(nIndex);
 
-        qDebug() << Q_FUNC_INFO << "tTile.number : " << tTile.number;
-        m_model.replace(nIndex, tTile);
+        tile->setTileState(eTileState);
+        tile->setNumber(nNumber);
     }
     endResetModel();
     emit dataChanged(index(nIndex,0),index(nIndex,0));
@@ -80,11 +86,31 @@ QList<int> ItemModel::getVacancyIndexList()
 
     for (int i = 0; i < m_model.size() ; i++)
     {
-        if (vacancy == m_model.at(i).eState)
+        if (E_TILE_STATE_VACANCY == m_model.at(i)->getTileState())
         {
             tempList.append(i);
         }
     }
 
     return tempList;
+}
+
+int ItemModel::lastNumber()
+{
+    if (m_model.isEmpty())
+    {
+        return -1;
+    }
+
+    return m_model.last()->getNumber();
+}
+
+int ItemModel::firstNumber()
+{
+    if (m_model.isEmpty())
+    {
+        return -1;
+    }
+
+    return m_model.first()->getNumber();
 }

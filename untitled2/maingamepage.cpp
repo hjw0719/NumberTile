@@ -1,6 +1,7 @@
 #include "maingamepage.h"
 #define OBJNAME_TILELIST "id_tileList"
 
+#define TILE_COUNT 8
 
 MainGamePage::MainGamePage() : Page(QUrl("qrc:/MainGamePage.qml")),
     m_pViewModel(new ItemModel)
@@ -18,35 +19,38 @@ void MainGamePage::initialize()
 {
     bool bConnectSuccess = connect(getComponent(OBJNAME_TILELIST), SIGNAL(clickedTileSignal(int)), this, SLOT(onClickedTileSignal(int)));
     qDebug() << Q_FUNC_INFO << "bConnectSuccess is " << bConnectSuccess;
-    m_tNumberList.clear();
 
-    for (int i = 0; i < 8; i++)
+    QList<HTile *> tNumberList;
+
+    for (int i = 0; i < TILE_COUNT; i++)
     {
-        Tile tile;
-        tile.number = i + 1;
-        tile.eState = occupy;
-        m_tNumberList.append(tile);
+        HTile *tile = new HTile();
+        tile->setNumber(i + 1);
+        tile->setTileState(E_TILE_STATE_OCCUPY);
+        tNumberList.append(tile);
     }
 
-    auto tempList = m_tNumberList;
 
-    for (int i = 0; i < m_tNumberList.length() -1 ; i++)
+    int nLength = tNumberList.length();
+
+    for (int i = 0; i < nLength -1 ; i++)
     {
-        int a = rand() % tempList.length();
-        int b = rand() % tempList.length();
-        tempList.swapItemsAt(a, b);
+        int a = rand() % nLength;
+        int b = rand() % nLength;
+        tNumberList.swapItemsAt(a, b);
     }
 
-    Tile vacancyTile;
-    vacancyTile.number = -1;
-    vacancyTile.eState = vacancy;
-    tempList.append(vacancyTile);
+    HTile *vacancyTile = new HTile();
+    vacancyTile->setNumber(-1);
+    vacancyTile->setTileState(E_TILE_STATE_VACANCY);
+    tNumberList.append(vacancyTile);
 
-    m_pViewModel->setList(tempList);
+    m_pViewModel->setList(tNumberList);
     qDebug() << "TRY!!";
     qRegisterMetaType<ItemModel*>("ItemModel*");
     getComponent(OBJNAME_TILELIST)->setProperty("model", QVariant::fromValue(m_pViewModel));
 
+    setLastNumber(TILE_COUNT);
 
     qDebug() << "SUCCESS!!";
 }
@@ -59,26 +63,14 @@ void MainGamePage::setAnswerNumber(int nAnswerNumber)
 void MainGamePage::successTouch(const int &nIndex)
 {
     qDebug() << Q_FUNC_INFO << nIndex;
-    m_tNumberList.pop_front();
+    m_pViewModel->editItem(nIndex, E_TILE_STATE_VACANCY, -1);
 
-
-    Tile vacancyTile;
-    vacancyTile.number = -1;
-    vacancyTile.eState = vacancy;
-    m_pViewModel->editItem(nIndex, vacancyTile);
-
-    Tile pushTile;
-    pushTile = m_tNumberList.last();
-    pushTile.number++;
-    pushTile.eState = occupy;
-
-
-    qDebug() << Q_FUNC_INFO << pushTile.number;
-    m_tNumberList.push_back(pushTile);
     QList<int> tVacancyList = m_pViewModel->getVacancyIndexList();
     int nNextPushIndex = tVacancyList.at(rand() % tVacancyList.length());
     qDebug() << Q_FUNC_INFO << "nNextPushIndex" << nNextPushIndex;
-    m_pViewModel->editItem(nNextPushIndex, pushTile);
+
+    setLastNumber(m_nLastNumber + 1);
+    m_pViewModel->editItem(nNextPushIndex, E_TILE_STATE_OCCUPY, m_nLastNumber);
 }
 
 void MainGamePage::failTouch(const int &nIndex)
@@ -86,14 +78,20 @@ void MainGamePage::failTouch(const int &nIndex)
     qDebug() << Q_FUNC_INFO << nIndex;
 }
 
+void MainGamePage::setLastNumber(const int &nNumber)
+{
+    m_nLastNumber = nNumber;
+    m_nFirstNumber = m_nLastNumber - TILE_COUNT + 1;
+}
+
 void MainGamePage::onClickedTileSignal(int nIndex)
 {
     qDebug() << Q_FUNC_INFO << nIndex;
-    Tile tSelectedTile = m_pViewModel->getData(nIndex);
+    HTile *tSelectedTile = m_pViewModel->getData(nIndex);
 
-    qDebug() << Q_FUNC_INFO << "tSelectedTile" << tSelectedTile.number;
+    qDebug() << Q_FUNC_INFO << "tSelectedTile" << tSelectedTile->getNumber();
 
-    if (tSelectedTile.number == m_tNumberList.first().number)
+    if (tSelectedTile->getNumber() == m_nFirstNumber)
     {
         successTouch(nIndex);
     }

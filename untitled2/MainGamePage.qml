@@ -7,6 +7,7 @@ Item{
     height : Screen.height
 
     Grid{
+        id : id_grid
         columns: 3
         Repeater{
             id: id_tileList

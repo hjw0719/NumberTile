@@ -3,7 +3,7 @@
 
 #include "page.h"
 #include "itemmodel.h"
-#include "util.h"
+#include "htile.h"
 
 class MainGamePage : public Page
 {
@@ -21,6 +21,7 @@ protected:
     void successTouch(const int &nIndex);
     void failTouch(const int &nIndex);
 
+    void setLastNumber(const int &nNumber);
 protected slots:
     void onClickedTileSignal(int nIndex);
 
@@ -28,9 +29,10 @@ private:
     ItemModel* m_pViewModel;
     QMap<int, int> m_tIndexMapping;
 
-    QList<Tile> m_tNumberList;
-
     int m_nAnswerNumber;
+
+    int m_nFirstNumber;
+    int m_nLastNumber;
 };
 
 #endif // MAINGAMEPAGE_H

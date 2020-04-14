@@ -1,10 +1,10 @@
 #ifndef ITEMMODEL_H
 #define ITEMMODEL_H
-#include "util.h"
+
 #include <QAbstractItemModel>
-#include "qdebug.h"
+#include "htile.h"
 
-
+class HTile;
 class ItemModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -15,19 +15,24 @@ class ItemModel : public QAbstractListModel
     };
 
 public:
-    ItemModel();
+    explicit ItemModel();
+    virtual ~ItemModel();
+
 
 public:
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
     virtual QHash<int,QByteArray> roleNames() const;
-    void setList(QList<Tile> &tList);
+    void setList(QList<HTile *> &tList);
 
-    Tile getData(const int nRow);
-    void editItem(const int &nIndex, const Tile &tTile);
+    HTile *getData(const int nRow);
+    void editItem(const int &nIndex, const ETileState &eTileState, int nNumber);
     QList<int> getVacancyIndexList();
+
+    int lastNumber();
+    int firstNumber();
 private:
-    QList<Tile> m_model;
+    QList<HTile *> m_model;
     QHash<int,QByteArray> m_tRoles;
 
 };
