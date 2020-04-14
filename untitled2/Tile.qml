@@ -6,13 +6,11 @@ Item {
     property int nState: 0
     signal clickedTile(int number)
 
-
     Rectangle {
         visible: nState
         anchors.fill: parent
         color: "yellow"
         opacity: 0.8
-
         Text {
             anchors.centerIn: parent
             text: number
@@ -24,5 +22,4 @@ Item {
         anchors.fill: parent
         onClicked: clickedTile(number)
     }
-
 }

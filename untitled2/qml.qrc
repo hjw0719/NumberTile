@@ -4,5 +4,6 @@
         <file>MainGamePage.qml</file>
         <file>Tile.qml</file>
         <file>Popup.qml</file>
+        <file>Gauge.qml</file>
     </qresource>
 </RCC>
