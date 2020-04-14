@@ -2,7 +2,7 @@
 #define ITEMMODEL_H
 #include "util.h"
 #include <QAbstractItemModel>
-
+#include "qdebug.h"
 
 
 class ItemModel : public QAbstractListModel
@@ -24,7 +24,8 @@ public:
     void setList(QList<Tile> &tList);
 
     Tile getData(const int nRow);
-    void setItem(const Tile &tTile);
+    void editItem(const int &nIndex, const Tile &tTile);
+    QList<int> getVacancyIndexList();
 private:
     QList<Tile> m_model;
     QHash<int,QByteArray> m_tRoles;

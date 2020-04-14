@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>MainGamePage.qml</file>
         <file>Tile.qml</file>
+        <file>Popup.qml</file>
     </qresource>
 </RCC>

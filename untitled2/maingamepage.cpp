@@ -3,11 +3,10 @@
 
 
 MainGamePage::MainGamePage() : Page(QUrl("qrc:/MainGamePage.qml")),
-    m_pViewModel(new ItemModel),
-    m_nAnswerNumber(-1)
+    m_pViewModel(new ItemModel)
 {
-    initialize();
     srand((unsigned int)time(0));
+    initialize();
 }
 
 MainGamePage::~MainGamePage()
@@ -17,35 +16,33 @@ MainGamePage::~MainGamePage()
 
 void MainGamePage::initialize()
 {
-    QList<Tile> tNumberList;
+    bool bConnectSuccess = connect(getComponent(OBJNAME_TILELIST), SIGNAL(clickedTileSignal(int)), this, SLOT(onClickedTileSignal(int)));
+    qDebug() << Q_FUNC_INFO << "bConnectSuccess is " << bConnectSuccess;
+    m_tNumberList.clear();
 
-
-
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 8; i++)
     {
         Tile tile;
         tile.number = i + 1;
         tile.eState = occupy;
-
-        if (8 == i)
-        {
-            tile.eState = vacancy;
-            tile.number = -1;
-        }
-
-        tNumberList.append(tile);
+        m_tNumberList.append(tile);
     }
 
-    for (int i = 0; i < tNumberList.length() ; i++)
+    auto tempList = m_tNumberList;
+
+    for (int i = 0; i < m_tNumberList.length() -1 ; i++)
     {
-        int a = rand() % tNumberList.length();
-        int b = rand() % tNumberList.length();
-        tNumberList.swapItemsAt(a, b);
+        int a = rand() % tempList.length();
+        int b = rand() % tempList.length();
+        tempList.swapItemsAt(a, b);
     }
 
-    setAnswerNumber(1);
+    Tile vacancyTile;
+    vacancyTile.number = -1;
+    vacancyTile.eState = vacancy;
+    tempList.append(vacancyTile);
 
-    m_pViewModel->setList(tNumberList);
+    m_pViewModel->setList(tempList);
     qDebug() << "TRY!!";
     qRegisterMetaType<ItemModel*>("ItemModel*");
     getComponent(OBJNAME_TILELIST)->setProperty("model", QVariant::fromValue(m_pViewModel));
@@ -61,38 +58,48 @@ void MainGamePage::setAnswerNumber(int nAnswerNumber)
 
 void MainGamePage::successTouch(const int &nIndex)
 {
-    Tile tSelectedTile = m_pViewModel->getData(nIndex);
+    qDebug() << Q_FUNC_INFO << nIndex;
+    m_tNumberList.pop_front();
 
 
+    Tile vacancyTile;
+    vacancyTile.number = -1;
+    vacancyTile.eState = vacancy;
+    m_pViewModel->editItem(nIndex, vacancyTile);
 
+    Tile pushTile;
+    pushTile = m_tNumberList.last();
+    pushTile.number++;
+    pushTile.eState = occupy;
+
+
+    qDebug() << Q_FUNC_INFO << pushTile.number;
+    m_tNumberList.push_back(pushTile);
+    QList<int> tVacancyList = m_pViewModel->getVacancyIndexList();
+    int nNextPushIndex = tVacancyList.at(rand() % tVacancyList.length());
+    qDebug() << Q_FUNC_INFO << "nNextPushIndex" << nNextPushIndex;
+    m_pViewModel->editItem(nNextPushIndex, pushTile);
 }
 
-void MainGamePage::failTouch()
+void MainGamePage::failTouch(const int &nIndex)
 {
-
-}
-
-void MainGamePage::pushTile()
-{
-    int newNumber = m_tIndexMapping.size() + 1;
-
-    Tile newTile;
-    newTile.number = newNumber;
-
-    rand() %
+    qDebug() << Q_FUNC_INFO << nIndex;
 }
 
 void MainGamePage::onClickedTileSignal(int nIndex)
 {
+    qDebug() << Q_FUNC_INFO << nIndex;
     Tile tSelectedTile = m_pViewModel->getData(nIndex);
 
-    if (tSelectedTile.number == m_nAnswerNumber)
+    qDebug() << Q_FUNC_INFO << "tSelectedTile" << tSelectedTile.number;
+
+    if (tSelectedTile.number == m_tNumberList.first().number)
     {
-        successTouch();
+        successTouch(nIndex);
     }
     else
     {
-        failTouch();
+        failTouch(nIndex);
     }
 }
 

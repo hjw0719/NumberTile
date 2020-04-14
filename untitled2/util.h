@@ -14,7 +14,6 @@ struct Tile
 {
     int number = 0;
     ETileState eState = vacancy;
-    Tile *nextTile = nullptr;
     Tile()
     {
         number = 0;

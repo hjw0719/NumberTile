@@ -7,6 +7,7 @@
 
 class MainGamePage : public Page
 {
+    Q_OBJECT
 public:
     MainGamePage();
     ~MainGamePage();
@@ -18,15 +19,16 @@ protected:
     void setAnswerNumber(int nAnswerNumber);
 
     void successTouch(const int &nIndex);
-    void failTouch();
+    void failTouch(const int &nIndex);
 
-    void pushTile();
 protected slots:
     void onClickedTileSignal(int nIndex);
 
 private:
     ItemModel* m_pViewModel;
     QMap<int, int> m_tIndexMapping;
+
+    QList<Tile> m_tNumberList;
 
     int m_nAnswerNumber;
 };

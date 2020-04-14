@@ -1,7 +1,10 @@
 import QtQuick 2.0
+import QtQuick.Window 2.14
 
 Item{
     id: id_mainGamePage
+    width: Screen.width
+    height : Screen.height
 
     Grid{
         columns: 3
@@ -16,8 +19,13 @@ Item{
 
                 number: nNumber
                 nState: eState
-                onClickedTile: id_tileList.clickedTileSignal(number)
+                onClickedTile: id_tileList.clickedTileSignal(index)
             }
         }
+    }
+
+    Popup {
+        strDisplayText: "Game Over!!!"
+        visible: false
     }
 }

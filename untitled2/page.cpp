@@ -13,11 +13,11 @@ Page::Page(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
     m_qml->setParentItem(this->contentItem());
     qDebug() << m_qml;
 
-    this->setWidth(PAGE_SIZE_WIDTH);
-    this->setHeight(PAGE_SIZE_HEIGHT);
+//    this->setWidth(PAGE_SIZE_WIDTH);
+//    this->setHeight(PAGE_SIZE_HEIGHT);
 
-    m_qml->setWidth(PAGE_SIZE_WIDTH);
-    m_qml->setHeight(PAGE_SIZE_HEIGHT);
+//    m_qml->setWidth(PAGE_SIZE_WIDTH);
+//    m_qml->setHeight(PAGE_SIZE_HEIGHT);
 }
 
 QQuickItem* Page::getComponent(const QString &strObjectName)

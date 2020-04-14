@@ -1,5 +1,6 @@
 #include "itemmodel.h"
 #include "util.h"
+
 ItemModel::ItemModel()
 {
     m_tRoles.insert(eTileNumber, "nNumber");
@@ -58,10 +59,32 @@ Tile ItemModel::getData(const int nRow)
     }
 }
 
-void ItemModel::setItem(const Tile &tTile)
+void ItemModel::editItem(const int &nIndex, const Tile &tTile)
 {
+    beginResetModel();
+    qDebug() << Q_FUNC_INFO << nIndex;
     if (!m_model.isEmpty())
     {
-        tTile
+
+        qDebug() << Q_FUNC_INFO << "tTile.number : " << tTile.number;
+        m_model.replace(nIndex, tTile);
     }
+    endResetModel();
+    emit dataChanged(index(nIndex,0),index(nIndex,0));
+}
+
+QList<int> ItemModel::getVacancyIndexList()
+{
+    QList<int> tempList;
+    tempList.clear();
+
+    for (int i = 0; i < m_model.size() ; i++)
+    {
+        if (vacancy == m_model.at(i).eState)
+        {
+            tempList.append(i);
+        }
+    }
+
+    return tempList;
 }
