@@ -27,9 +27,6 @@ protected slots:
 
 private:
     ItemModel* m_pViewModel;
-    QMap<int, int> m_tIndexMapping;
-
-    int m_nAnswerNumber;
 
     int m_nFirstNumber;
     int m_nLastNumber;

@@ -7,13 +7,13 @@ Item {
     signal clickedTile(int number)
 
     Rectangle {
-        visible: nState
+//        visible: nState
         anchors.fill: parent
-        color: "yellow"
+        color: nState ? "yellow" : "gray"
         opacity: 0.8
         Text {
             anchors.centerIn: parent
-            text: number
+            text: nState ? number : ""
             font.pixelSize: 30
         }
     }
