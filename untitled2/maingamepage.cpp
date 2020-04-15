@@ -46,18 +46,12 @@ void MainGamePage::initialize()
     tNumberList.append(vacancyTile);
 
     m_pViewModel->setList(tNumberList);
-    qDebug() << "TRY!!";
     qRegisterMetaType<ItemModel*>("ItemModel*");
     getComponent(OBJNAME_TILELIST)->setProperty("model", QVariant::fromValue(m_pViewModel));
 
     setLastNumber(TILE_COUNT);
 
     qDebug() << "SUCCESS!!";
-}
-
-void MainGamePage::setAnswerNumber(int nAnswerNumber)
-{
-    m_nAnswerNumber = nAnswerNumber;
 }
 
 void MainGamePage::successTouch(const int &nIndex)

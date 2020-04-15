@@ -1,6 +1,6 @@
 #include "manager.h"
 #include "page.h"
-#include "util.h"
+
 #include <QQmlIncubator>
 #include <qqmlcomponent.h>
 
