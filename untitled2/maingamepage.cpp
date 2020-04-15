@@ -1,10 +1,12 @@
 #include "maingamepage.h"
-#define OBJNAME_TILELIST "id_tileList"
 
+#include "hitemmodel.h"
+
+#define OBJNAME_TILELIST "id_tileList"
 #define TILE_COUNT 8
 
-MainGamePage::MainGamePage() : Page(QUrl("qrc:/MainGamePage.qml")),
-    m_pViewModel(new ItemModel)
+MainGamePage::MainGamePage() : HPage(QUrl("qrc:/MainGamePage.qml")),
+    m_pViewModel(new HItemModel())
 {
     srand((unsigned int)time(0));
     initialize();
@@ -26,7 +28,7 @@ void MainGamePage::initialize()
     {
         HTile *tile = new HTile();
         tile->setNumber(i + 1);
-        tile->setTileState(E_TILE_STATE_OCCUPY);
+        tile->setTileState(HTile::E_TILE_STATE_OCCUPY);
         tNumberList.append(tile);
     }
 
@@ -42,11 +44,11 @@ void MainGamePage::initialize()
 
     HTile *vacancyTile = new HTile();
     vacancyTile->setNumber(-1);
-    vacancyTile->setTileState(E_TILE_STATE_VACANCY);
+    vacancyTile->setTileState(HTile::E_TILE_STATE_VACANCY);
     tNumberList.append(vacancyTile);
 
     m_pViewModel->setList(tNumberList);
-    qRegisterMetaType<ItemModel*>("ItemModel*");
+    qRegisterMetaType<HItemModel*>("HItemModel*");
     getComponent(OBJNAME_TILELIST)->setProperty("model", QVariant::fromValue(m_pViewModel));
 
     setLastNumber(TILE_COUNT);
@@ -57,14 +59,14 @@ void MainGamePage::initialize()
 void MainGamePage::successTouch(const int &nIndex)
 {
     qDebug() << Q_FUNC_INFO << nIndex;
-    m_pViewModel->editItem(nIndex, E_TILE_STATE_VACANCY, -1);
+    m_pViewModel->editItem(nIndex, HTile::E_TILE_STATE_VACANCY, -1);
 
     QList<int> tVacancyList = m_pViewModel->getVacancyIndexList();
     int nNextPushIndex = tVacancyList.at(rand() % tVacancyList.length());
     qDebug() << Q_FUNC_INFO << "nNextPushIndex" << nNextPushIndex;
 
     setLastNumber(m_nLastNumber + 1);
-    m_pViewModel->editItem(nNextPushIndex, E_TILE_STATE_OCCUPY, m_nLastNumber);
+    m_pViewModel->editItem(nNextPushIndex, HTile::E_TILE_STATE_OCCUPY, m_nLastNumber);
 }
 
 void MainGamePage::failTouch(const int &nIndex)

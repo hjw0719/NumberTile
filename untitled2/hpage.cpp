@@ -1,12 +1,12 @@
-#include "manager.h"
-#include "page.h"
+#include "hlaunchermanager.h"
+#include "hpage.h"
 
 #include <QQmlIncubator>
 #include <qqmlcomponent.h>
 
-Page::Page(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
+HPage::HPage(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
 {
-    auto engine = Manager::instance()->getEngine();
+    auto engine = HLancherManager::instance()->getEngine();
     QQmlComponent *pComponent = new QQmlComponent(engine, m_urlSource);
 
     m_qml = qobject_cast<QQuickItem*>(pComponent->create());
@@ -20,7 +20,7 @@ Page::Page(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
 //    m_qml->setHeight(PAGE_SIZE_HEIGHT);
 }
 
-QQuickItem* Page::getComponent(const QString &strObjectName)
+QQuickItem* HPage::getComponent(const QString &strObjectName)
 {
     auto pItem = m_qml->findChild<QQuickItem*>(strObjectName);
 

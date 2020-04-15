@@ -1,4 +1,5 @@
 #include "htile.h"
+#include "htile.h"
 
 HTile::HTile(QQuickItem *parent) :
     QQuickItem(parent),
@@ -27,9 +28,11 @@ int HTile::getNumber() const
 void HTile::setNumber(int nNumber)
 {
     m_nNumber = nNumber;
+
+    emit numberChanged();
 }
 
-ETileState HTile::getTileState() const
+HTile::ETileState HTile::getTileState() const
 {
     return m_eTileState;
 }
@@ -37,4 +40,6 @@ ETileState HTile::getTileState() const
 void HTile::setTileState(const ETileState &eState)
 {
     m_eTileState = eState;
+
+    emit tileStateChanged();
 }

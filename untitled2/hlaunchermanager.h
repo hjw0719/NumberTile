@@ -3,22 +3,23 @@
 
 #include <QQmlApplicationEngine>
 
-class Manager
+class HLancherManager
 {
 private:
-    Manager();
+    explicit HLancherManager();
 
 
 public:
     void initialize();
     QQmlApplicationEngine *getEngine();
-    static Manager *instance();
+    static HLancherManager *instance();
 
-
+protected:
+    void registerItem();
 
 private:
     QQmlApplicationEngine *m_engine;
-    static Manager* m_singleTonManager;
+    static HLancherManager* m_singleTonManager;
 };
 
 #endif // MANAGE_H

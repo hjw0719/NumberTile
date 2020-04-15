@@ -4,10 +4,10 @@
 #include <QQuickItem>
 #include <qquickwindow.h>
 
-class Page : public QQuickWindow
+class HPage : public QQuickWindow
 {
 public:
-    Page(QUrl urlSource);
+    explicit HPage(QUrl urlSource);
 
 protected:
     QQuickItem *getComponent(const QString &strObjectName);

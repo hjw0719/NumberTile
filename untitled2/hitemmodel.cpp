@@ -1,24 +1,24 @@
-#include "itemmodel.h"
+#include "hitemmodel.h"
 #include <QDebug>
 
-ItemModel::ItemModel()
+HItemModel::HItemModel()
 {
     m_tRoles.insert(eTileNumber, "nNumber");
     m_tRoles.insert(eTileState, "eState");
 }
 
-ItemModel::~ItemModel()
+HItemModel::~HItemModel()
 {
     qDeleteAll(m_model);
 }
 
-int ItemModel::rowCount(const QModelIndex &parent) const
+int HItemModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return m_model.count();
 }
 
-QVariant ItemModel::data(const QModelIndex &index, int role) const
+QVariant HItemModel::data(const QModelIndex &index, int role) const
 {
     Q_UNUSED(role)
     int nIndex = index.row();
@@ -40,19 +40,19 @@ QVariant ItemModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> ItemModel::roleNames() const
+QHash<int, QByteArray> HItemModel::roleNames() const
 {
     return m_tRoles;
 }
 
-void ItemModel::setList(QList<HTile *> &tList)
+void HItemModel::setList(QList<HTile *> &tList)
 {
     beginResetModel();
     m_model = tList;
     endResetModel();
 }
 
-HTile *ItemModel::getData(const int nRow)
+HTile *HItemModel::getData(const int nRow)
 {
     if (m_model.count() <= nRow)
     {
@@ -64,7 +64,7 @@ HTile *ItemModel::getData(const int nRow)
     }
 }
 
-void ItemModel::editItem(const int &nIndex, const ETileState &eTileState, int nNumber)
+void HItemModel::editItem(const int &nIndex, const HTile::ETileState &eTileState, int nNumber)
 {
     beginResetModel();
     qDebug() << Q_FUNC_INFO << nIndex;
@@ -79,14 +79,14 @@ void ItemModel::editItem(const int &nIndex, const ETileState &eTileState, int nN
     emit dataChanged(index(nIndex,0),index(nIndex,0));
 }
 
-QList<int> ItemModel::getVacancyIndexList()
+QList<int> HItemModel::getVacancyIndexList()
 {
     QList<int> tempList;
     tempList.clear();
 
     for (int i = 0; i < m_model.size() ; i++)
     {
-        if (E_TILE_STATE_VACANCY == m_model.at(i)->getTileState())
+        if (HTile::E_TILE_STATE_VACANCY == m_model.at(i)->getTileState())
         {
             tempList.append(i);
         }
@@ -95,7 +95,7 @@ QList<int> ItemModel::getVacancyIndexList()
     return tempList;
 }
 
-int ItemModel::lastNumber()
+int HItemModel::lastNumber()
 {
     if (m_model.isEmpty())
     {
@@ -105,7 +105,7 @@ int ItemModel::lastNumber()
     return m_model.last()->getNumber();
 }
 
-int ItemModel::firstNumber()
+int HItemModel::firstNumber()
 {
     if (m_model.isEmpty())
     {

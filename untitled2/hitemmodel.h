@@ -4,8 +4,7 @@
 #include <QAbstractItemModel>
 #include "htile.h"
 
-class HTile;
-class ItemModel : public QAbstractListModel
+class HItemModel : public QAbstractListModel
 {
     Q_OBJECT
     enum eItemRoles
@@ -15,8 +14,8 @@ class ItemModel : public QAbstractListModel
     };
 
 public:
-    explicit ItemModel();
-    virtual ~ItemModel();
+    explicit HItemModel();
+    virtual ~HItemModel();
 
 
 public:
@@ -26,7 +25,7 @@ public:
     void setList(QList<HTile *> &tList);
 
     HTile *getData(const int nRow);
-    void editItem(const int &nIndex, const ETileState &eTileState, int nNumber);
+    void editItem(const int &nIndex, const HTile::ETileState &eTileState, int nNumber);
     QList<int> getVacancyIndexList();
 
     int lastNumber();

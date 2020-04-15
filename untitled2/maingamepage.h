@@ -1,18 +1,16 @@
 #ifndef MAINGAMEPAGE_H
 #define MAINGAMEPAGE_H
 
-#include "page.h"
-#include "itemmodel.h"
-#include "htile.h"
+#include "hpage.h"
 
-class MainGamePage : public Page
+class HItemModel;
+
+class MainGamePage : public HPage
 {
     Q_OBJECT
 public:
     MainGamePage();
     ~MainGamePage();
-
-
 
 protected:
     void initialize();
@@ -26,7 +24,7 @@ protected slots:
     void onClickedTileSignal(int nIndex);
 
 private:
-    ItemModel* m_pViewModel;
+    HItemModel* m_pViewModel;
 
     int m_nFirstNumber;
     int m_nLastNumber;
