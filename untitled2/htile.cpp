@@ -1,10 +1,11 @@
 #include "htile.h"
-#include "htile.h"
+
+#include "hdatamanager.h"
 
 HTile::HTile(QQuickItem *parent) :
     QQuickItem(parent),
     m_nNumber(0),
-    m_eTileState(E_TILE_STATE_VACANCY)
+    m_eTileStatus(E_TILE_STATUS_VACANCY)
 {
 
 }
@@ -17,29 +18,54 @@ HTile::~HTile()
 void HTile::initialize()
 {
     m_nNumber = 0;
-    m_eTileState = E_TILE_STATE_VACANCY;
+    m_eTileStatus = E_TILE_STATUS_VACANCY;
 }
 
-int HTile::getNumber() const
+quint64 HTile::getNumber() const
 {
     return m_nNumber;
 }
 
-void HTile::setNumber(int nNumber)
+void HTile::setNumber(QVariant vNumber)
 {
-    m_nNumber = nNumber;
+    if(vNumber.canConvert<quint64>())
+    {
+        m_nNumber = vNumber.value<quint64>();
+    }
+    else
+    {
+        qDebug() << "Can't convert !!";
+    }
 
     emit numberChanged();
 }
 
-HTile::ETileState HTile::getTileState() const
+HTile::ETileStatus HTile::getTileStatus() const
 {
-    return m_eTileState;
+    return m_eTileStatus;
 }
 
-void HTile::setTileState(const ETileState &eState)
+void HTile::setTileStatus(const QVariant &vState)
 {
-    m_eTileState = eState;
+    if (vState.canConvert<HTile::ETileStatus>())
+    {
+        m_eTileStatus = vState.value<HTile::ETileStatus>();
 
-    emit tileStateChanged();
+        emit tileStatusChanged();
+    }
+    else
+    {
+        qDebug() << "Can't convert !!";
+    }
 }
+
+void HTile::onSuccessTouched()
+{
+
+}
+
+void HTile::onFailTouched()
+{
+
+}
+

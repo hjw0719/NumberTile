@@ -1,6 +1,6 @@
 #include "maingamepage.h"
 #include "hlaunchermanager.h"
-#include "hpage.h"
+#include "hdatamanager.h"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     HLancherManager::instance()->initialize();
+    HDataManager::instance();
 
     MainGamePage a;
 

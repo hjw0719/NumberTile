@@ -10,6 +10,9 @@ public:
     explicit HPage(QUrl urlSource);
 
 protected:
+    virtual void initialize();
+    virtual void registerItem() {}
+
     QQuickItem *getComponent(const QString &strObjectName);
 
 private:

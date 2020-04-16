@@ -1,25 +1,24 @@
 import QtQuick 2.0
+import HTile 1.0
 
-Item {
+HTile {
+    id : id_tile
 
-    property int number: 0
-    property int nState: 0
-    signal clickedTile(int number)
+    property alias mouseArea : id_mouseArea;
 
     Rectangle {
-//        visible: nState
         anchors.fill: parent
-        color: nState ? "yellow" : "gray"
+        color: HTile.E_TILE_STATUS_OCCUPY === id_tile.status ? "yellow" : "gray"
         opacity: 0.8
         Text {
             anchors.centerIn: parent
-            text: nState ? number : ""
+            text: HTile.E_TILE_STATUS_OCCUPY === id_tile.status ? id_tile.number : ""
             font.pixelSize: 30
         }
     }
 
     MouseArea {
+        id : id_mouseArea
         anchors.fill: parent
-        onClicked: clickedTile(number)
     }
 }

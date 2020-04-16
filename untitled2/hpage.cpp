@@ -17,8 +17,14 @@ HPage::HPage(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
 //    this->setHeight(PAGE_SIZE_HEIGHT);
 
 //    m_qml->setWidth(PAGE_SIZE_WIDTH);
-//    m_qml->setHeight(PAGE_SIZE_HEIGHT);
+    //    m_qml->setHeight(PAGE_SIZE_HEIGHT);
 }
+
+void HPage::initialize()
+{
+    registerItem();
+}
+
 
 QQuickItem* HPage::getComponent(const QString &strObjectName)
 {

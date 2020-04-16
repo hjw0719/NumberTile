@@ -10,8 +10,10 @@ public:
     explicit HGamer(QObject *parent = NULL);
 
 private :
-    qulonglong m_qullScore;
-    unsigned int m_nRank;
+    quint16 m_nCombo;
+    qulonglong m_nScore;
+    qulonglong m_nMaxScore;
+    quint16 m_nRank;
 };
 
 #endif // HGAMER_H

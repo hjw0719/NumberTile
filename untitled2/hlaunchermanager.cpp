@@ -1,6 +1,5 @@
 #include "hlaunchermanager.h"
 
-#include "hitemmodel.h"
 #include "htile.h"
 
 HLancherManager* HLancherManager::m_singleTonManager = NULL;
@@ -33,5 +32,5 @@ HLancherManager *HLancherManager::instance()
 
 void HLancherManager::registerItem()
 {
-    qmlRegisterType<HTile>("HTile", 1, 0, "Tile");
+    qmlRegisterType<HTile>("HTile", 1, 0, "HTile");
 }

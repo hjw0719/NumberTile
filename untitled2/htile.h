@@ -4,21 +4,21 @@
 #include <qquickitem.h>
 
 
-
 class HTile : public QQuickItem
 {
     Q_OBJECT
 
     Q_PROPERTY(int number READ getNumber WRITE setNumber NOTIFY numberChanged)
-    Q_PROPERTY(ETileState state READ getTileState WRITE setTileState NOTIFY tileStateChanged)
+    Q_PROPERTY(ETileStatus status READ getTileStatus WRITE setTileStatus NOTIFY tileStatusChanged)
 public :
-    enum ETileState
+    enum ETileStatus
     {
-        E_TILE_STATE_VACANCY = 0,
-        E_TILE_STATE_OCCUPY
+        E_TILE_STATUS_VACANCY = 0,
+        E_TILE_STATUS_OCCUPY
     };
 
-    Q_ENUM(ETileState)
+    Q_ENUM(ETileStatus)
+
 
 public:
     explicit HTile(QQuickItem *parent = NULL);
@@ -26,21 +26,25 @@ public:
 
     void initialize();
 
-    int getNumber() const;
-    void setNumber(int nNumber);
+    quint64 getNumber() const;
+    void setNumber(QVariant vNumber);
 
-    HTile::ETileState getTileState() const;
-    void setTileState(const HTile::ETileState &eState);
+    HTile::ETileStatus getTileStatus() const;
+    void setTileStatus(const QVariant &vState);
 
 protected slots :
+    void onSuccessTouched();
+    void onFailTouched();
 
 signals :
     void numberChanged();
-    void tileStateChanged();
+    void tileStatusChanged();
 
 private :
-    int m_nNumber;
-    ETileState m_eTileState;
+    quint64 m_nNumber;
+    ETileStatus m_eTileStatus;
 };
+
+Q_DECLARE_METATYPE(HTile::ETileStatus);
 
 #endif // HTILE_H
