@@ -10,22 +10,31 @@ class HTile;
 class HDataManager : public QObject
 {
     Q_OBJECT
+public :
+    enum ETouchStatus{
+        E_TOUCH_STATUS_SUCCESS,
+        E_TOUCH_STATUS_FAIL
+    };
+
+    Q_ENUM(ETouchStatus)
+
 public:
     explicit HDataManager(QObject *parent = NULL);
-
-    void setLastNumber(const quint64 &nNumber);
 
     static QSharedPointer<HDataManager> instance();
     static void doDelete(HDataManager *manager);
 
-    void touchProcess(const HTile *tile);
+    void touchProcess(const ETouchStatus &eTouchStatus);
 
 protected:
     void initialize();
 
+signals :
+    void successTouched();
+    void failedTouched();
+
 private :
-    quint64 m_nFirstNumber;
-    quint64 m_nLastNumber;
+    QSharedPointer<HGamer> m_pCurrentGamer;
 };
 
 #endif // HDATAMANAGER_H

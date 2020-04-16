@@ -1,6 +1,7 @@
 #include "hdatamanager.h"
 
 #include "htile.h"
+#include "hgamer.h"
 
 #define TILE_COUNT 8
 
@@ -10,17 +11,6 @@ HDataManager::HDataManager(QObject *parent) :
     QObject(parent)
 {
     initialize();
-}
-
-void HDataManager::setLastNumber(const quint64 &nNumber)
-{
-    if (m_nLastNumber == nNumber)
-    {
-        return;
-    }
-
-    m_nLastNumber = nNumber;
-    m_nFirstNumber = m_nLastNumber - TILE_COUNT + 1;
 }
 
 QSharedPointer<HDataManager> HDataManager::instance()
@@ -41,22 +31,35 @@ void HDataManager::doDelete(HDataManager *manager)
     }
 }
 
-void HDataManager::touchProcess(const HTile *tile)
+void HDataManager::touchProcess(const ETouchStatus &eTouchStatus)
 {
-    if (nullptr == tile)
+    if (m_pCurrentGamer.isNull())
     {
         return;
     }
 
-    if (tile->getNumber() == m_nFirstNumber)
+    switch(eTouchStatus)
     {
-        // SUCCESS
-        // [1] 타일 변경
-        // [2] 점수 산정
+    case E_TOUCH_STATUS_SUCCESS :
+    {
+        // [1] 점수 산정.
+
+        m_pCurrentGamer->setScore(m_pCurrentGamer->getScore() + 100);
+
+        // [2] 타이머 컨트롤.
+        emit successTouched();
+    }   break;
+    case E_TOUCH_STATUS_FAIL :
+    {
+        // [1] 타이머 컨트롤.
+
+        emit failedTouched();
+    }   break;
+    default : break;
     }
 }
 
 void HDataManager::initialize()
 {
-    setLastNumber(TILE_COUNT);
+    m_pCurrentGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
 }
