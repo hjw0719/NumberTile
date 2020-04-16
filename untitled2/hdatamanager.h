@@ -6,7 +6,7 @@
 
 class HGamer;
 class HTile;
-
+// 게임 데이터 관련 처리.
 class HDataManager : public QObject
 {
     Q_OBJECT
