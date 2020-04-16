@@ -12,7 +12,9 @@ public:
     virtual void initialize() override;
     void reduceAddtimeInterval();
 
-public slots:
+protected:
+    void setRemainGauge(int nRemainGauge);
+protected slots:
     void reduceLifeTime();
     void addLifeTime();
 

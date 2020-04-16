@@ -32,14 +32,16 @@ void MainGamePage::initialize()
 {
     HPage::initialize();
 
+    connect(HDataManager::instance().data(), SIGNAL(successTouched()), this, SLOT(addLifeTime()));
+    connect(HDataManager::instance().data(), SIGNAL(failedTouched()), this, SLOT(reduceLifeTime()));
     m_LifeTimer.setSingleShot(true);
     m_LifeTimer.start(LIFE_MAX_TIME);
-
+    setRemainGauge(LIFE_MAX_TIME);
 }
 
 void MainGamePage::reduceAddtimeInterval()
 {
-    // 타일 터치시 life gage의 증가폭을 감소시킴(단계가 올라갈수록 난이도 증가를 위한 장치.)
+    // 타일 터치시 life gage의 증가폭을 감소시킴(단계가 올라갈수록 난이도 증가를 위한 장치).
     if (LIFE_ADD_INTERVAL_MIN == m_nAddLifeTimeInterval)
     {
         return;
@@ -51,21 +53,28 @@ void MainGamePage::reduceAddtimeInterval()
     }
 }
 
+void MainGamePage::setRemainGauge(int nRemainGauge)
+{
+    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::QueuedConnection, Q_ARG(QVariant, nRemainGauge));
+}
+
 void MainGamePage::reduceLifeTime()
 {
+    // 잘못된 선택에 의한 life gage 감소.
     int nTempRemainTime = m_LifeTimer.remainingTime() - LIFE_REDUCE_INTERVAL;
     qDebug() << Q_FUNC_INFO << m_LifeTimer.remainingTime() << " " << LIFE_REDUCE_INTERVAL;
     if (LIFE_REDUCE_INTERVAL > nTempRemainTime)
     {
         nTempRemainTime = 0;
     }
-    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::QueuedConnection, Q_ARG(QVariant, nTempRemainTime));
+    setRemainGauge(nTempRemainTime);
     m_LifeTimer.stop();
     m_LifeTimer.start(nTempRemainTime);
 }
 
 void MainGamePage::addLifeTime()
 {
+    // 정확한 선택에 의한 life gage 증가.
     int nTempRemainTime = m_LifeTimer.remainingTime() + m_nAddLifeTimeInterval;
     qDebug() << Q_FUNC_INFO << m_LifeTimer.remainingTime() << " " << m_nAddLifeTimeInterval;
 
@@ -73,7 +82,7 @@ void MainGamePage::addLifeTime()
     {
         nTempRemainTime = LIFE_MAX_TIME;
     }
-    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::QueuedConnection, Q_ARG(QVariant, nTempRemainTime));
+    setRemainGauge(nTempRemainTime);
     m_LifeTimer.stop();
     m_LifeTimer.start(nTempRemainTime);
     reduceAddtimeInterval();
