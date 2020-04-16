@@ -30,7 +30,7 @@ void HDataManager::doDelete(HDataManager *manager)
     }
 }
 
-void HDataManager::touchProcess(const ETouchStatus &eTouchStatus)
+void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
 {
     if (m_pCurrentGamer.isNull())
     {
@@ -39,30 +39,50 @@ void HDataManager::touchProcess(const ETouchStatus &eTouchStatus)
 
     switch(eTouchStatus)
     {
-    case E_TOUCH_STATUS_SUCCESS :
+    case HEnum::E_TOUCH_STATUS_SUCCESS :
     {
         // [1] Add Score.
         m_pCurrentGamer->setScore(m_pCurrentGamer->getScore() + DEFAULT_SCORE);
 
         // [2] Add Combo.
         m_pCurrentGamer->setCombo(m_pCurrentGamer->getCombo() + 1);
-
-        // [3] Control Timer.
-        emit successTouched();
     }   break;
-    case E_TOUCH_STATUS_FAIL :
+    case HEnum::E_TOUCH_STATUS_FAIL :
     {
         // [1] init Combo.
         m_pCurrentGamer->setCombo(0);
-
-        // [2] Contorl Timer
-        emit failedTouched();
     }   break;
     default : break;
     }
+
+    // update UI
+    emit updateUI(eTouchStatus);
+}
+
+qulonglong HDataManager::getScore()
+{
+    if (!m_pCurrentGamer.isNull())
+    {
+        return m_pCurrentGamer->getScore();
+    }
+
+    return 0;
+}
+
+quint16 HDataManager::getCombo()
+{
+    if (!m_pCurrentGamer.isNull())
+    {
+        return m_pCurrentGamer->getCombo();
+    }
+
+    return 0;
 }
 
 void HDataManager::initialize()
 {
-    m_pCurrentGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
+    if (m_pCurrentGamer.isNull())
+    {
+        m_pCurrentGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
+    }
 }

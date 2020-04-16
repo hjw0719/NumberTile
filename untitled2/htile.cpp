@@ -5,7 +5,7 @@
 HTile::HTile(QQuickItem *parent) :
     QQuickItem(parent),
     m_nNumber(0),
-    m_eTileStatus(E_TILE_STATUS_VACANCY)
+    m_eTileStatus(HEnum::E_TILE_STATUS_VACANCY)
 {
 
 }
@@ -18,7 +18,7 @@ HTile::~HTile()
 void HTile::initialize()
 {
     m_nNumber = 0;
-    m_eTileStatus = E_TILE_STATUS_VACANCY;
+    m_eTileStatus = HEnum::E_TILE_STATUS_VACANCY;
 }
 
 quint64 HTile::getNumber() const
@@ -40,16 +40,16 @@ void HTile::setNumber(QVariant vNumber)
     emit numberChanged();
 }
 
-HTile::ETileStatus HTile::getTileStatus() const
+HEnum::ETileStatus HTile::getTileStatus() const
 {
     return m_eTileStatus;
 }
 
 void HTile::setTileStatus(const QVariant &vState)
 {
-    if (vState.canConvert<HTile::ETileStatus>())
+    if (vState.canConvert<HEnum::ETileStatus>())
     {
-        m_eTileStatus = vState.value<HTile::ETileStatus>();
+        m_eTileStatus = vState.value<HEnum::ETileStatus>();
 
         emit tileStatusChanged();
     }
@@ -61,11 +61,11 @@ void HTile::setTileStatus(const QVariant &vState)
 
 void HTile::onSuccessTouched()
 {
-    HDataManager::instance()->touchProcess(HDataManager::E_TOUCH_STATUS_SUCCESS);
+    HDataManager::instance()->touchProcess(HEnum::E_TOUCH_STATUS_SUCCESS);
 }
 
 void HTile::onFailTouched()
 {
-    HDataManager::instance()->touchProcess(HDataManager::E_TOUCH_STATUS_FAIL);
+    HDataManager::instance()->touchProcess(HEnum::E_TOUCH_STATUS_FAIL);
 }
 

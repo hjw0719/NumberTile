@@ -2,22 +2,15 @@
 #define HTILE_H
 
 #include <qquickitem.h>
-
+#include "HEnum.h"
 
 class HTile : public QQuickItem
 {
     Q_OBJECT
 
     Q_PROPERTY(int number READ getNumber WRITE setNumber NOTIFY numberChanged)
-    Q_PROPERTY(ETileStatus status READ getTileStatus WRITE setTileStatus NOTIFY tileStatusChanged)
+    Q_PROPERTY(HEnum::ETileStatus status READ getTileStatus WRITE setTileStatus NOTIFY tileStatusChanged)
 public :
-    enum ETileStatus
-    {
-        E_TILE_STATUS_VACANCY = 0,
-        E_TILE_STATUS_OCCUPY
-    };
-
-    Q_ENUM(ETileStatus)
 
 
 public:
@@ -29,7 +22,7 @@ public:
     quint64 getNumber() const;
     void setNumber(QVariant vNumber);
 
-    HTile::ETileStatus getTileStatus() const;
+    HEnum::ETileStatus getTileStatus() const;
     void setTileStatus(const QVariant &vState);
 
 protected slots :
@@ -42,9 +35,9 @@ signals :
 
 private :
     quint64 m_nNumber;
-    ETileStatus m_eTileStatus;
+    HEnum::ETileStatus m_eTileStatus;
 };
 
-Q_DECLARE_METATYPE(HTile::ETileStatus);
+
 
 #endif // HTILE_H

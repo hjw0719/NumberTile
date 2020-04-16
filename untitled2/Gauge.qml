@@ -5,6 +5,9 @@ Item {
     property int maxGauge: 10000;
     property real currentPercent: 1
 
+    property var score : 0
+    property var combo : 0
+
     Rectangle{
         id: id_BG
         color: "red"
@@ -20,12 +23,12 @@ Item {
     }
 
     Text {
-        text: id_animation.duration
+        text: score //id_animation.duration
         anchors.left: parent.left
     }
 
     Text {
-        text: currentPercent
+        text: combo // currentPercent
         anchors.right: parent.right
     }
 

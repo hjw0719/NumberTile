@@ -33,4 +33,5 @@ HLancherManager *HLancherManager::instance()
 void HLancherManager::registerItem()
 {
     qmlRegisterType<HTile>("HTile", 1, 0, "HTile");
+    qmlRegisterType<HEnum>("HEnum", 1, 0, "HEnum");
 }

@@ -3,6 +3,7 @@
 
 #include <QList>
 #include <QSharedPointer>
+#include "HEnum.h"
 
 class HGamer;
 class HTile;
@@ -11,12 +12,7 @@ class HDataManager : public QObject
 {
     Q_OBJECT
 public :
-    enum ETouchStatus{
-        E_TOUCH_STATUS_SUCCESS,
-        E_TOUCH_STATUS_FAIL
-    };
 
-    Q_ENUM(ETouchStatus)
 
 public:
     explicit HDataManager(QObject *parent = NULL);
@@ -24,14 +20,15 @@ public:
     static HDataManager *instance();
     static void doDelete(HDataManager *manager);
 
-    void touchProcess(const ETouchStatus &eTouchStatus);
+    void touchProcess(const HEnum::ETouchStatus &eTouchStatus);
 
+    qulonglong getScore();
+    quint16 getCombo();
 protected:
     void initialize();
 
 signals :
-    void successTouched();
-    void failedTouched();
+    void updateUI(HEnum::ETouchStatus eTouchStatus);
 
 private :
     QSharedPointer<HGamer> m_pCurrentGamer;

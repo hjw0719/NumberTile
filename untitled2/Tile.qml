@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import HTile 1.0
+import HEnum 1.0
 
 HTile {
     id : id_tile
@@ -8,11 +9,11 @@ HTile {
 
     Rectangle {
         anchors.fill: parent
-        color: HTile.E_TILE_STATUS_OCCUPY === id_tile.status ? "yellow" : "gray"
+        color: HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? "yellow" : "gray"
         opacity: 0.8
         Text {
             anchors.centerIn: parent
-            text: HTile.E_TILE_STATUS_OCCUPY === id_tile.status ? id_tile.number : ""
+            text: HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? id_tile.number : ""
             font.pixelSize: 30
         }
     }

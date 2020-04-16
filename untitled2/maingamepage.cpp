@@ -24,8 +24,7 @@ void MainGamePage::initialize()
 {
     HPage::initialize();
 
-    connect(HDataManager::instance(), SIGNAL(successTouched()), this, SLOT(addLifeTime()));
-    connect(HDataManager::instance(), SIGNAL(failedTouched()), this, SLOT(reduceLifeTime()));
+    connect(HDataManager::instance(), SIGNAL(updateUI(HEnum::ETouchStatus)), this, SLOT(onUpdateUI(HEnum::ETouchStatus)));
     m_LifeTimer.setSingleShot(true);
     m_LifeTimer.start(LIFE_MAX_TIME);
     setRemainGauge(LIFE_MAX_TIME);
@@ -48,6 +47,42 @@ void MainGamePage::reduceAddtimeInterval()
 void MainGamePage::setRemainGauge(int nRemainGauge)
 {
     QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::QueuedConnection, Q_ARG(QVariant, nRemainGauge));
+}
+
+void MainGamePage::setScoreText(const qulonglong &nScore)
+{
+    getComponent(OBJNAME_LIFEGAUGE)->setProperty("score", nScore);
+}
+
+void MainGamePage::setComboText(const quint16 &nCombo)
+{
+    getComponent(OBJNAME_LIFEGAUGE)->setProperty("combo", nCombo);
+}
+
+void MainGamePage::onUpdateUI(HEnum::ETouchStatus eTouchStatus)
+{
+    switch(eTouchStatus)
+    {
+    case HEnum::E_TOUCH_STATUS_SUCCESS :
+    {
+        // [1] Control Timer.
+        addLifeTime();
+
+        // [2] Update Score.
+        setScoreText(HDataManager::instance()->getScore());
+
+        // [3] Update combo.
+        setComboText(HDataManager::instance()->getCombo());
+    }   break;
+    case HEnum::E_TOUCH_STATUS_FAIL :
+    {
+        // [1] Control Timer.
+        reduceLifeTime();
+
+        // [2] Update Combo.
+        setComboText(HDataManager::instance()->getCombo());
+    }   break;
+    }
 }
 
 void MainGamePage::reduceLifeTime()

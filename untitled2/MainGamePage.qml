@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Window 2.14
-import HTile 1.0
+import HEnum 1.0
 
 Item{
     id: id_mainGamePage
@@ -45,7 +45,7 @@ Item{
                 height: (id_grid.height - id_grid.spacing * 2)/3.0
 
                 number: index === (id_tileList.count - 1) ? 0 : index + 1
-                status: index === (id_tileList.count - 1) ? HTile.E_TILE_STATUS_VACANCY : HTile.E_TILE_STATUS_OCCUPY
+                status: index === (id_tileList.count - 1) ? HEnum.E_TILE_STATUS_VACANCY : HEnum.E_TILE_STATUS_OCCUPY
 
                 mouseArea.onClicked: {
                     if (number === nFirstNumber)
@@ -56,13 +56,13 @@ Item{
 
                         // [2] 타일을 우선 비어있는 타일로 변경.
                         number = 0
-                        status = HTile.E_TILE_STATUS_VACANCY
+                        status = HEnum.E_TILE_STATUS_VACANCY
 
                         // [3] 비어 있는 타일 찾기.
                         var vacancyItems = []
                         for (var i = 0; i < id_tileList.count; i++)
                         {
-                            if (id_tileList.itemAt(i).status === HTile.E_TILE_STATUS_VACANCY)
+                            if (id_tileList.itemAt(i).status === HEnum.E_TILE_STATUS_VACANCY)
                             {
                                 vacancyItems.push(i)
                             }
@@ -76,7 +76,7 @@ Item{
 
                         // [5] Occupy로 변경.
                         id_tileList.itemAt(occupyIndex).number = nLastNumber
-                        id_tileList.itemAt(occupyIndex).status = HTile.E_TILE_STATUS_OCCUPY
+                        id_tileList.itemAt(occupyIndex).status = HEnum.E_TILE_STATUS_OCCUPY
 
                         onSuccessTouched()
                     }

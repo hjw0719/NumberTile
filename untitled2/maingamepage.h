@@ -3,18 +3,24 @@
 
 #include "hpage.h"
 #include <QTimer>
+#include "HEnum.h"
+
 class MainGamePage : public HPage
 {
     Q_OBJECT
 public:
-    MainGamePage();
-    ~MainGamePage();
+    explicit MainGamePage();
+    virtual ~MainGamePage();
     virtual void initialize() override;
     void reduceAddtimeInterval();
 
 protected:
     void setRemainGauge(int nRemainGauge);
-protected slots:
+    void setScoreText(const qulonglong &nScore);
+    void setComboText(const quint16 &nCombo);
+
+protected slots :
+    void onUpdateUI(HEnum::ETouchStatus eTouchStatus);
     void reduceLifeTime();
     void addLifeTime();
 

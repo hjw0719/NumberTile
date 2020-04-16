@@ -31,7 +31,7 @@ void HGamer::setScore(const qulonglong &nScore)
         setMaxScore(m_nScore);
     }
 
-    qDebug() << "Score : " << m_nScore;
+    emit scoreChanged();
 }
 
 qulonglong HGamer::getScore()
@@ -48,7 +48,7 @@ void HGamer::setCombo(const quint16 &nCombo)
         setMaxCombo(m_nCombo);
     }
 
-    qDebug() << "Combo : " << m_nCombo;
+    emit comboChanged();
 }
 
 quint16 HGamer::getCombo()

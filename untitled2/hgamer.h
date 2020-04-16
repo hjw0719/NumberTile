@@ -23,6 +23,10 @@ public:
     void setMaxScore(const qulonglong &nMaxScore);
     qulonglong getMaxScore();
 
+signals :
+    void scoreChanged();
+    void comboChanged();
+
 private :
     quint16 m_nCombo;
     quint16 m_nMaxCombo;

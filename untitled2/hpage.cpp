@@ -1,5 +1,6 @@
 #include "hlaunchermanager.h"
 #include "hpage.h"
+#include "HDefine.h"
 
 #include <QQmlIncubator>
 #include <qqmlcomponent.h>
