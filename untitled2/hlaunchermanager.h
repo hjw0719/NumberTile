@@ -3,6 +3,8 @@
 
 #include <QQmlApplicationEngine>
 
+
+// 화면전환 및 화면 설정과 관련된 구현부.
 class HLancherManager
 {
 private:
