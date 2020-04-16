@@ -21,7 +21,7 @@ public :
 public:
     explicit HDataManager(QObject *parent = NULL);
 
-    static QSharedPointer<HDataManager> instance();
+    static HDataManager *instance();
     static void doDelete(HDataManager *manager);
 
     void touchProcess(const ETouchStatus &eTouchStatus);

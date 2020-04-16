@@ -1,17 +1,12 @@
 #include "maingamepage.h"
 
 #include "hdatamanager.h"
-
+#include "HDefine.h"
 #include <QMetaObject>
 
 #define OBJNAME_TILELIST "id_tileList"
 #define OBJNAME_LIFEGAUGE "id_lifeGauge"
-#define TILE_COUNT 8
-#define LIFE_MAX_TIME 5000
-#define LIFE_ADD_INTERVAL_INIT 1000
-#define LIFE_ADD_INTERVAL_REDUCE_SIZE 10
-#define LIFE_ADD_INTERVAL_MIN 150
-#define LIFE_REDUCE_INTERVAL 1000
+
 
 MainGamePage::MainGamePage() :
     HPage(QUrl("qrc:/MainGamePage.qml")),
@@ -19,10 +14,10 @@ MainGamePage::MainGamePage() :
 {
     initialize();
 #ifdef OS_DESKTOP
-    this->setWidth(300);
-    this->setHeight(700);
-    m_qml->setProperty("width", 300);
-    m_qml->setProperty("height", 700);
+    this->setWidth(DESKTOP_OS_WIDTH);
+    this->setHeight(DESKTOP_OS_HEIGHT);
+    m_qml->setProperty("width", DESKTOP_OS_WIDTH);
+    m_qml->setProperty("height", DESKTOP_OS_HEIGHT);
 #endif
 }
 
@@ -35,8 +30,8 @@ void MainGamePage::initialize()
 {
     HPage::initialize();
 
-    connect(HDataManager::instance().data(), SIGNAL(successTouched()), this, SLOT(addLifeTime()));
-    connect(HDataManager::instance().data(), SIGNAL(failedTouched()), this, SLOT(reduceLifeTime()));
+    connect(HDataManager::instance(), SIGNAL(successTouched()), this, SLOT(addLifeTime()));
+    connect(HDataManager::instance(), SIGNAL(failedTouched()), this, SLOT(reduceLifeTime()));
     m_LifeTimer.setSingleShot(true);
     m_LifeTimer.start(LIFE_MAX_TIME);
     setRemainGauge(LIFE_MAX_TIME);

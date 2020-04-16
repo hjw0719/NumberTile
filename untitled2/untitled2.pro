@@ -41,6 +41,7 @@ equals (QMAKE_HOST.os, "Windows") {
 }
 
 HEADERS += \
+    HDefine.h \
     hdatamanager.h \
     hgamer.h \
     hlaunchermanager.h \

@@ -17,11 +17,15 @@ public:
     void setCombo(const quint16 &nCombo);
     quint16 getCombo();
 
+    void setMaxCombo(const quint16 &nMaxCombo);
+    quint16 getMaxCombo();
+
     void setMaxScore(const qulonglong &nMaxScore);
     qulonglong getMaxScore();
 
 private :
     quint16 m_nCombo;
+    quint16 m_nMaxCombo;
     qulonglong m_nScore;
     qulonglong m_nMaxScore;
     quint16 m_nRank;

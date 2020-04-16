@@ -2,8 +2,7 @@
 
 #include "htile.h"
 #include "hgamer.h"
-
-#define TILE_COUNT 8
+#include "HDefine.h"
 
 QSharedPointer<HDataManager> obj = NULL;
 
@@ -13,14 +12,14 @@ HDataManager::HDataManager(QObject *parent) :
     initialize();
 }
 
-QSharedPointer<HDataManager> HDataManager::instance()
+HDataManager *HDataManager::instance()
 {
     if (obj.isNull())
     {
         obj = QSharedPointer<HDataManager>(new HDataManager, &HDataManager::doDelete);
     }
 
-    return obj;
+    return obj.data();
 }
 
 void HDataManager::doDelete(HDataManager *manager)
@@ -42,17 +41,21 @@ void HDataManager::touchProcess(const ETouchStatus &eTouchStatus)
     {
     case E_TOUCH_STATUS_SUCCESS :
     {
-        // [1] 점수 산정.
+        // [1] Add Score.
+        m_pCurrentGamer->setScore(m_pCurrentGamer->getScore() + DEFAULT_SCORE);
 
-        m_pCurrentGamer->setScore(m_pCurrentGamer->getScore() + 100);
+        // [2] Add Combo.
+        m_pCurrentGamer->setCombo(m_pCurrentGamer->getCombo() + 1);
 
-        // [2] 타이머 컨트롤.
+        // [3] Control Timer.
         emit successTouched();
     }   break;
     case E_TOUCH_STATUS_FAIL :
     {
-        // [1] 타이머 컨트롤.
+        // [1] init Combo.
+        m_pCurrentGamer->setCombo(0);
 
+        // [2] Contorl Timer
         emit failedTouched();
     }   break;
     default : break;
