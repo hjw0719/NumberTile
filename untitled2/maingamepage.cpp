@@ -13,12 +13,6 @@ MainGamePage::MainGamePage() :
     m_nAddLifeTimeInterval(LIFE_ADD_INTERVAL_INIT)
 {
     initialize();
-#ifdef OS_DESKTOP
-    this->setWidth(DESKTOP_OS_WIDTH);
-    this->setHeight(DESKTOP_OS_HEIGHT);
-    m_qml->setProperty("width", DESKTOP_OS_WIDTH);
-    m_qml->setProperty("height", DESKTOP_OS_HEIGHT);
-#endif
 }
 
 MainGamePage::~MainGamePage()
