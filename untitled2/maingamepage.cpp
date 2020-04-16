@@ -27,6 +27,7 @@ void MainGamePage::initialize()
     connect(HDataManager::instance(), SIGNAL(updateUI(HEnum::ETouchStatus)), this, SLOT(onUpdateUI(HEnum::ETouchStatus)));
     m_LifeTimer.setSingleShot(true);
     m_LifeTimer.start(LIFE_MAX_TIME);
+    getComponent(OBJNAME_LIFEGAUGE)->setProperty("maxGauge", LIFE_MAX_TIME);
     setRemainGauge(LIFE_MAX_TIME);
 }
 
@@ -40,8 +41,10 @@ void MainGamePage::reduceAddtimeInterval()
     int tempInterval = m_nAddLifeTimeInterval - LIFE_ADD_INTERVAL_REDUCE_SIZE;
     if (tempInterval < LIFE_ADD_INTERVAL_MIN)
     {
-        m_nAddLifeTimeInterval = LIFE_ADD_INTERVAL_MIN;
+        tempInterval = LIFE_ADD_INTERVAL_MIN;
     }
+
+    m_nAddLifeTimeInterval = tempInterval;
 }
 
 void MainGamePage::setRemainGauge(int nRemainGauge)
