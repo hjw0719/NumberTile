@@ -35,6 +35,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+
+equals (QMAKE_HOST.os, "Windows") {
+        DEFINES += OS_DESKTOP
+}
+
 HEADERS += \
     hdatamanager.h \
     hgamer.h \

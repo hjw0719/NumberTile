@@ -15,8 +15,10 @@ protected:
 
     QQuickItem *getComponent(const QString &strObjectName);
 
-private:
+protected:
     QQuickItem *m_qml;
+
+private:
     QUrl m_urlSource;
 };
 
