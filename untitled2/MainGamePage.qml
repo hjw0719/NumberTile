@@ -10,9 +10,22 @@ Item{
     property int tileSize : 3
     property int nLastNumber : tileSize * tileSize - 1
     property int nFirstNumber : 1
+    property bool bFever : false
 
     onTileSizeChanged: {
         // 변경된 사이즈로 모델 초기화.
+    }
+
+    onBFeverChanged: {
+        // Fever 상태 변경 동작.
+        for (var i = 0; i < id_tileList.count; i++)
+        {
+            var item = id_tileList.itemAt(i)
+
+            item.status = bFever ? HEnum.E_TILE_STATUS_FEVER
+                                 : 0 === item.number ? HEnum.E_TILE_STATUS_VACANCY
+                                                     : HEnum.E_TILE_STATUS_OCCUPY
+        }
     }
 
     Gauge{
@@ -48,42 +61,50 @@ Item{
                 status: index === (id_tileList.count - 1) ? HEnum.E_TILE_STATUS_VACANCY : HEnum.E_TILE_STATUS_OCCUPY
 
                 mouseArea.onClicked: {
-                    if (number === nFirstNumber)
+                    if (bFever)
                     {
-                        // [1] Change Last, First Number
-                        nLastNumber = nLastNumber + 1;
-                        nFirstNumber = nFirstNumber + 1;
-
-                        // [2] 타일을 우선 비어있는 타일로 변경.
-                        number = 0
-                        status = HEnum.E_TILE_STATUS_VACANCY
-
-                        // [3] 비어 있는 타일 찾기.
-                        var vacancyItems = []
-                        for (var i = 0; i < id_tileList.count; i++)
-                        {
-                            if (id_tileList.itemAt(i).status === HEnum.E_TILE_STATUS_VACANCY)
-                            {
-                                vacancyItems.push(i)
-                            }
-                        }
-
-                        var vacancyItemSize = vacancyItems.length
-
-                        // [4] 비어 있는 타일 중 Occupy로 변경할 타일 랜덤하게 선택.
-                        var convertOccupyIndex = Math.ceil(Math.random() * vacancyItemSize) - 1
-                        var occupyIndex = vacancyItems[convertOccupyIndex]
-
-                        // [5] Occupy로 변경.
-                        id_tileList.itemAt(occupyIndex).number = nLastNumber
-                        id_tileList.itemAt(occupyIndex).status = HEnum.E_TILE_STATUS_OCCUPY
-
                         onSuccessTouched()
                     }
                     else
                     {
-                        onFailTouched()
+                        if (number === nFirstNumber)
+                        {
+                            // [1] Change Last, First Number
+                            nLastNumber = nLastNumber + 1;
+                            nFirstNumber = nFirstNumber + 1;
+
+                            // [2] 타일을 우선 비어있는 타일로 변경.
+                            number = 0
+                            status = HEnum.E_TILE_STATUS_VACANCY
+
+                            // [3] 비어 있는 타일 찾기.
+                            var vacancyItems = []
+                            for (var i = 0; i < id_tileList.count; i++)
+                            {
+                                if (id_tileList.itemAt(i).status === HEnum.E_TILE_STATUS_VACANCY)
+                                {
+                                    vacancyItems.push(i)
+                                }
+                            }
+
+                            var vacancyItemSize = vacancyItems.length
+
+                            // [4] 비어 있는 타일 중 Occupy로 변경할 타일 랜덤하게 선택.
+                            var convertOccupyIndex = Math.ceil(Math.random() * vacancyItemSize) - 1
+                            var occupyIndex = vacancyItems[convertOccupyIndex]
+
+                            // [5] Occupy로 변경.
+                            id_tileList.itemAt(occupyIndex).number = nLastNumber
+                            id_tileList.itemAt(occupyIndex).status = HEnum.E_TILE_STATUS_OCCUPY
+
+                            onSuccessTouched()
+                        }
+                        else
+                        {
+                            onFailTouched()
+                        }
                     }
+
                 }
             }
 

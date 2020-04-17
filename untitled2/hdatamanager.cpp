@@ -4,10 +4,16 @@
 #include "hgamer.h"
 #include "HDefine.h"
 
+#include <QTimer>
+
 QSharedPointer<HDataManager> obj = NULL;
 
 HDataManager::HDataManager(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_bFever(false),
+    m_nFeverGauge(0),
+    m_nCombo(0),
+    m_nScore(0)
 {
     initialize();
 }
@@ -42,41 +48,81 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
     case HEnum::E_TOUCH_STATUS_SUCCESS :
     {
         // [1] Add Score.
-        m_pCurrentGamer->setScore(m_pCurrentGamer->getScore() + DEFAULT_SCORE);
+        int addScore = getScore() + (getFever() ? FEVER_SCORE : DEFAULT_SCORE);
+        setScore(addScore);
 
         // [2] Add Combo.
-        m_pCurrentGamer->setCombo(m_pCurrentGamer->getCombo() + 1);
+        setCombo(getCombo() + 1);
+
+        emit updateUI(HEnum::E_UPDATE_UI_SUCCESS_TOUCH);
+
+        // [3] Check Fever.
+        if (COMBO_FOR_FEVER <= getFeverGauge())
+        {
+            setFever(true);
+            setFeverGauge(0);
+            emit updateUI(HEnum::E_UPDATE_UI_FEVER);
+
+            QTimer::singleShot(FEVER_INTERVAL, this, [=](){
+                emit updateUI(HEnum::E_UPDATE_UI_NORMAL);
+            });
+        }
     }   break;
     case HEnum::E_TOUCH_STATUS_FAIL :
     {
         // [1] init Combo.
-        m_pCurrentGamer->setCombo(0);
+        setCombo(0);
+
+        emit updateUI(HEnum::E_UPDATE_UI_FAIL_TOUCH);
     }   break;
     default : break;
     }
 
     // update UI
-    emit updateUI(eTouchStatus);
+}
+
+void HDataManager::setScore(const qulonglong &nScore)
+{
+    m_nScore = nScore;
 }
 
 qulonglong HDataManager::getScore()
 {
-    if (!m_pCurrentGamer.isNull())
-    {
-        return m_pCurrentGamer->getScore();
-    }
+    return m_nScore;
+}
 
-    return 0;
+void HDataManager::setCombo(const quint16 &nCombo)
+{
+    m_nCombo = nCombo;
+
+    if (!getFever())
+    {
+        if (0 == m_nCombo)
+        {
+            setFeverGauge(0);
+        }
+        else
+        {
+            setFeverGauge(getFeverGauge() + 1);
+        }
+    }
 }
 
 quint16 HDataManager::getCombo()
 {
-    if (!m_pCurrentGamer.isNull())
-    {
-        return m_pCurrentGamer->getCombo();
-    }
+    return m_nCombo;
+}
 
-    return 0;
+void HDataManager::setFever(const bool &bFever)
+{
+    m_bFever = bFever;
+
+    emit feverChanged(m_bFever);
+}
+
+bool HDataManager::getFever()
+{
+    return m_bFever;
 }
 
 void HDataManager::initialize()
@@ -85,4 +131,14 @@ void HDataManager::initialize()
     {
         m_pCurrentGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
     }
+}
+
+quint8 HDataManager::getFeverGauge() const
+{
+    return m_nFeverGauge;
+}
+
+void HDataManager::setFeverGauge(const quint8 &nFeverGauge)
+{
+    m_nFeverGauge = nFeverGauge;
 }

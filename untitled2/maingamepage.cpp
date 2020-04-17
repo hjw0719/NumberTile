@@ -24,7 +24,7 @@ void MainGamePage::initialize()
 {
     HPage::initialize();
 
-    connect(HDataManager::instance(), SIGNAL(updateUI(HEnum::ETouchStatus)), this, SLOT(onUpdateUI(HEnum::ETouchStatus)));
+    connect(HDataManager::instance(), SIGNAL(updateUI(HEnum::EUpdateUIType)), this, SLOT(onUpdateUI(HEnum::EUpdateUIType)));
     m_LifeTimer.setSingleShot(true);
     m_LifeTimer.start(LIFE_MAX_TIME);
     getComponent(OBJNAME_LIFEGAUGE)->setProperty("maxGauge", LIFE_MAX_TIME);
@@ -62,11 +62,16 @@ void MainGamePage::setComboText(const quint16 &nCombo)
     getComponent(OBJNAME_LIFEGAUGE)->setProperty("combo", nCombo);
 }
 
-void MainGamePage::onUpdateUI(HEnum::ETouchStatus eTouchStatus)
+void MainGamePage::setFeverMode(const bool &bFever)
 {
-    switch(eTouchStatus)
+    m_qml->setProperty("bFever", bFever);
+}
+
+void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
+{
+    switch(eUpdateUIType)
     {
-    case HEnum::E_TOUCH_STATUS_SUCCESS :
+    case HEnum::E_UPDATE_UI_SUCCESS_TOUCH :
     {
         // [1] Control Timer.
         addLifeTime();
@@ -77,7 +82,7 @@ void MainGamePage::onUpdateUI(HEnum::ETouchStatus eTouchStatus)
         // [3] Update combo.
         setComboText(HDataManager::instance()->getCombo());
     }   break;
-    case HEnum::E_TOUCH_STATUS_FAIL :
+    case HEnum::E_UPDATE_UI_FAIL_TOUCH :
     {
         // [1] Control Timer.
         reduceLifeTime();
@@ -85,6 +90,15 @@ void MainGamePage::onUpdateUI(HEnum::ETouchStatus eTouchStatus)
         // [2] Update Combo.
         setComboText(HDataManager::instance()->getCombo());
     }   break;
+    case HEnum::E_UPDATE_UI_FEVER :
+    {
+        setFeverMode(true);
+    }   break;
+    case HEnum::E_UPDATE_UI_NORMAL :
+    {
+        setFeverMode(false);
+    }   break;
+    default : break;
     }
 }
 

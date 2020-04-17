@@ -18,9 +18,10 @@ protected:
     void setRemainGauge(int nRemainGauge);
     void setScoreText(const qulonglong &nScore);
     void setComboText(const quint16 &nCombo);
+    void setFeverMode(const bool &bFever);
 
 protected slots :
-    void onUpdateUI(HEnum::ETouchStatus eTouchStatus);
+    void onUpdateUI(HEnum::EUpdateUIType eUpdateUIType);
     void reduceLifeTime();
     void addLifeTime();
 

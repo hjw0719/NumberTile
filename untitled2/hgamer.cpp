@@ -3,9 +3,7 @@
 #include <QDebug>
 HGamer::HGamer(QObject *parent) :
     QObject(parent),
-    m_nCombo(0),
     m_nMaxCombo(0),
-    m_nScore(0),
     m_nMaxScore(0),
     m_nRank(0)
 {
@@ -20,40 +18,6 @@ void HGamer::doDeleteLater(HGamer *pGamer)
     }
 
     pGamer->deleteLater();
-}
-
-void HGamer::setScore(const qulonglong &nScore)
-{
-    m_nScore = nScore;
-
-    if (getMaxScore() < m_nScore)
-    {
-        setMaxScore(m_nScore);
-    }
-
-    emit scoreChanged();
-}
-
-qulonglong HGamer::getScore()
-{
-    return m_nScore;
-}
-
-void HGamer::setCombo(const quint16 &nCombo)
-{
-    m_nCombo = nCombo;
-
-    if (getMaxCombo() < m_nCombo)
-    {
-        setMaxCombo(m_nCombo);
-    }
-
-    emit comboChanged();
-}
-
-quint16 HGamer::getCombo()
-{
-    return m_nCombo;
 }
 
 void HGamer::setMaxCombo(const quint16 &nMaxCombo)

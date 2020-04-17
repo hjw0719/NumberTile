@@ -8,8 +8,11 @@ HTile {
     property alias mouseArea : id_mouseArea;
 
     Rectangle {
+        id : id_background
         anchors.fill: parent
-        color: HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? "yellow" : "gray"
+        color: HEnum.E_TILE_STATUS_FEVER === id_tile.status ? "green"
+                                                            : HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? "yellow"
+                                                                                                            : "gray"
         opacity: 0.8
         Text {
             anchors.centerIn: parent
