@@ -64,6 +64,7 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
             emit updateUI(HEnum::E_UPDATE_UI_FEVER);
 
             QTimer::singleShot(FEVER_INTERVAL, this, [=](){
+                setFever(false);
                 emit updateUI(HEnum::E_UPDATE_UI_NORMAL);
             });
         }
