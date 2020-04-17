@@ -143,3 +143,10 @@ void HDataManager::setFeverGauge(const quint8 &nFeverGauge)
 {
     m_nFeverGauge = nFeverGauge;
 }
+
+void HDataManager::dataInitialize()
+{
+    setFever(false);
+    setCombo(0);
+    setScore(0);
+}

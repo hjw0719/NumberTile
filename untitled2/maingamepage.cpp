@@ -6,10 +6,12 @@
 
 #define OBJNAME_TILELIST "id_tileList"
 #define OBJNAME_LIFEGAUGE "id_lifeGauge"
-
+#define OBJNAME_SCORE "id_score"
+#define OBJNAME_GAMEOVERPOPUP "id_gamaOverPopup"
 
 MainGamePage::MainGamePage() :
     HPage(QUrl("qrc:/MainGamePage.qml")),
+    m_pLifeTimer(new QTimer),
     m_nAddLifeTimeInterval(LIFE_ADD_INTERVAL_INIT)
 {
     initialize();
@@ -25,10 +27,15 @@ void MainGamePage::initialize()
     HPage::initialize();
 
     connect(HDataManager::instance(), SIGNAL(updateUI(HEnum::EUpdateUIType)), this, SLOT(onUpdateUI(HEnum::EUpdateUIType)));
-    m_LifeTimer.setSingleShot(true);
-    m_LifeTimer.start(LIFE_MAX_TIME);
+
+    connect(getComponent(OBJNAME_GAMEOVERPOPUP), SIGNAL(clickedRestartButton()), this, SLOT(onClickedRestartButton()));
+    connect(getComponent(OBJNAME_GAMEOVERPOPUP), SIGNAL(clickedScoreBoardButton()), this, SLOT(onClickedScoreBoardButton()));
+
+    QObject::connect(m_pLifeTimer, SIGNAL(timeout()), this, SLOT(onLifeTimeEnd()));
+
     getComponent(OBJNAME_LIFEGAUGE)->setProperty("maxGauge", LIFE_MAX_TIME);
-    setRemainGauge(LIFE_MAX_TIME);
+
+    gameStart();
 }
 
 void MainGamePage::reduceAddtimeInterval()
@@ -54,7 +61,7 @@ void MainGamePage::setRemainGauge(int nRemainGauge)
 
 void MainGamePage::setScoreText(const qulonglong &nScore)
 {
-    getComponent(OBJNAME_LIFEGAUGE)->setProperty("score", nScore);
+    getComponent(OBJNAME_SCORE)->setProperty("text", nScore);
 }
 
 void MainGamePage::setComboText(const quint16 &nCombo)
@@ -65,6 +72,29 @@ void MainGamePage::setComboText(const quint16 &nCombo)
 void MainGamePage::setFeverMode(const bool &bFever)
 {
     m_qml->setProperty("bFever", bFever);
+}
+
+void MainGamePage::gameOver()
+{
+    getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(true);
+}
+
+void MainGamePage::gameStart()
+{
+    QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initTile", Qt::QueuedConnection);
+    getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(false);
+    timerStart(LIFE_MAX_TIME);
+    setRemainGauge(LIFE_MAX_TIME);
+}
+
+void MainGamePage::timerStart(const int &nTime)
+{
+    m_pLifeTimer->start(nTime);
+}
+
+void MainGamePage::onLifeTimeEnd()
+{
+    gameOver();
 }
 
 void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
@@ -105,29 +135,46 @@ void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 void MainGamePage::reduceLifeTime()
 {
     // 잘못된 선택에 의한 life gage 감소.
-    int nTempRemainTime = m_LifeTimer.remainingTime() - LIFE_REDUCE_INTERVAL;
-    qDebug() << Q_FUNC_INFO << m_LifeTimer.remainingTime() << " " << LIFE_REDUCE_INTERVAL;
+    int nTempRemainTime = m_pLifeTimer->remainingTime() - LIFE_REDUCE_INTERVAL;
+    qDebug() << Q_FUNC_INFO << m_pLifeTimer->remainingTime() << " " << LIFE_REDUCE_INTERVAL;
     if (LIFE_REDUCE_INTERVAL > nTempRemainTime)
     {
         nTempRemainTime = 0;
+        gameOver();
+        m_pLifeTimer->stop();
     }
+    else
+    {
+        timerStart(nTempRemainTime);
+    }
+
     setRemainGauge(nTempRemainTime);
-    m_LifeTimer.stop();
-    m_LifeTimer.start(nTempRemainTime);
 }
 
 void MainGamePage::addLifeTime()
 {
     // 정확한 선택에 의한 life gage 증가.
-    int nTempRemainTime = m_LifeTimer.remainingTime() + m_nAddLifeTimeInterval;
-    qDebug() << Q_FUNC_INFO << m_LifeTimer.remainingTime() << " " << m_nAddLifeTimeInterval;
+    int nTempRemainTime = m_pLifeTimer->remainingTime() + m_nAddLifeTimeInterval;
+    qDebug() << Q_FUNC_INFO << m_pLifeTimer->remainingTime() << " " << m_nAddLifeTimeInterval;
 
     if (LIFE_MAX_TIME <= nTempRemainTime)
     {
         nTempRemainTime = LIFE_MAX_TIME;
     }
     setRemainGauge(nTempRemainTime);
-    m_LifeTimer.stop();
-    m_LifeTimer.start(nTempRemainTime);
+    m_pLifeTimer->stop();
+    timerStart(nTempRemainTime);
     reduceAddtimeInterval();
+}
+
+void MainGamePage::onClickedRestartButton()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    gameStart();
+}
+
+void MainGamePage::onClickedScoreBoardButton()
+{
+    qDebug() << Q_FUNC_INFO;
 }

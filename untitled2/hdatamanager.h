@@ -34,6 +34,8 @@ public:
     quint8 getFeverGauge() const;
     void setFeverGauge(const quint8 &nFeverGauge);
 
+    void dataInitialize();
+
 protected:
     void initialize();
 

@@ -19,8 +19,11 @@ SOURCES += \
         hlaunchermanager.cpp \
         hpage.cpp \
         htile.cpp \
+        hwindow.cpp \
         main.cpp \
-        maingamepage.cpp
+        maingamepage.cpp \
+        scoreboardpage.cpp \
+        titlepage.cpp
 
 RESOURCES += qml.qrc
 
@@ -48,4 +51,7 @@ HEADERS += \
     hlaunchermanager.h \
     hpage.h \
     htile.h \
-    maingamepage.h
+    hwindow.h \
+    maingamepage.h \
+    scoreboardpage.h \
+    titlepage.h

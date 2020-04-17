@@ -19,14 +19,19 @@ protected:
     void setScoreText(const qulonglong &nScore);
     void setComboText(const quint16 &nCombo);
     void setFeverMode(const bool &bFever);
+    void gameOver();
+    void gameStart();
+    void timerStart(const int &nTime);
 
 protected slots :
+    void onLifeTimeEnd();
     void onUpdateUI(HEnum::EUpdateUIType eUpdateUIType);
     void reduceLifeTime();
     void addLifeTime();
-
+    void onClickedRestartButton();
+    void onClickedScoreBoardButton();
 private:
-    QTimer m_LifeTimer;
+    QTimer *m_pLifeTimer;
     int m_nAddLifeTimeInterval;
 
 };

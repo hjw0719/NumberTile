@@ -39,3 +39,10 @@ QQuickItem* HPage::getComponent(const QString &strObjectName)
        return m_qml;
     }
 }
+
+void HPage::pageStop()
+{
+    this->setParentItem(nullptr);
+    this->setParent(nullptr);
+    this->setVisible(false);
+}
