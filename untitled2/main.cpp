@@ -18,9 +18,5 @@ int main(int argc, char *argv[])
 
     HLancherManager::instance()->initialize();
     HDataManager::instance();
-
-    MainGamePage a;
-
-    a.show();
     return app.exec();
 }

@@ -4,8 +4,9 @@
 #include <QQuickItem>
 #include <qquickwindow.h>
 
-class HPage : public QQuickWindow
+class HPage : public QQuickItem
 {
+    Q_OBJECT
 public:
     explicit HPage(QUrl urlSource);
 

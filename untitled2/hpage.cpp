@@ -1,7 +1,7 @@
 #include "hlaunchermanager.h"
 #include "hpage.h"
-#include "HDefine.h"
 
+#include "HDefine.h"
 #include <QQmlIncubator>
 #include <qqmlcomponent.h>
 
@@ -11,12 +11,10 @@ HPage::HPage(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
     QQmlComponent *pComponent = new QQmlComponent(engine, m_urlSource);
 
     m_qml = qobject_cast<QQuickItem*>(pComponent->create());
-    m_qml->setParentItem(this->contentItem());
+    m_qml->setParentItem(this);
     qDebug() << m_qml;
 
 #ifdef Q_OS_WIN
-    this->setWidth(DESKTOP_OS_WIDTH);
-    this->setHeight(DESKTOP_OS_HEIGHT);
     m_qml->setProperty("width", DESKTOP_OS_WIDTH);
     m_qml->setProperty("height", DESKTOP_OS_HEIGHT);
 #endif
