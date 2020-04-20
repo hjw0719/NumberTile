@@ -26,5 +26,5 @@ void TitlePage::initialize()
 void TitlePage::onClickedPage()
 {
     qDebug() << Q_FUNC_INFO;
-    HLancherManager::instance()->pageTransition(HEnum::E_PAGE_MAIN_GAME, HEnum::E_TRANSITION_SHOW_ALL_CLEAR);
+    HLauncherManager::instance()->pageTransition(HEnum::E_PAGE_MAIN_GAME, HEnum::E_TRANSITION_SHOW_ALL_CLEAR);
 }

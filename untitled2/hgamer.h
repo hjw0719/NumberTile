@@ -17,12 +17,11 @@ public:
     void setMaxScore(const qulonglong &nMaxScore);
     qulonglong getMaxScore();
 
-signals :
-
-
+    QString getName() const;
+    void setName(const QString &strName);
 
 private :
-
+    QString m_strName;
     quint16 m_nMaxCombo;
     qulonglong m_nMaxScore;
     quint16 m_nRank;
