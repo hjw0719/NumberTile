@@ -159,7 +159,7 @@ Page{
         signal clickedRestartButton()
         signal clickedScoreBoardButton()
 
-        Rectangle {
+        Item {
             height: parent.height/2
             width: parent.width/1.5
             anchors.centerIn: parent

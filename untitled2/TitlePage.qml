@@ -28,6 +28,15 @@ Page {
         text: "Touch screen for game start!"
         font.pixelSize: parent.width/15
         anchors.horizontalCenter: parent.horizontalCenter
+
+        Timer{
+            repeat : true
+            interval: 500
+            running: true
+            onTriggered: parent.visible = !parent.visible
+        }
     }
+
+
 
 }

@@ -13,6 +13,7 @@ HDataManager::HDataManager(QObject *parent) :
     m_bFever(false),
     m_nFeverGauge(0),
     m_nCombo(0),
+    m_nMaxCombo(0),
     m_nScore(0)
 {
     initialize();
@@ -53,6 +54,9 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
 
         // [2] Add Combo.
         setCombo(getCombo() + 1);
+
+        // [3] Check & Add Max Combo;
+        setMaxCombo(getCombo());
 
         emit updateUI(HEnum::E_UPDATE_UI_SUCCESS_TOUCH);
 
@@ -114,6 +118,19 @@ quint16 HDataManager::getCombo()
     return m_nCombo;
 }
 
+void HDataManager::setMaxCombo(const quint16 &nMaxCombo)
+{
+    if (m_nMaxCombo < nMaxCombo)
+    {
+        m_nMaxCombo = nMaxCombo;
+    }
+}
+
+quint16 HDataManager::getMaxCombo()
+{
+    return m_nMaxCombo;
+}
+
 void HDataManager::setFever(const bool &bFever)
 {
     m_bFever = bFever;
@@ -148,5 +165,13 @@ void HDataManager::dataInitialize()
 {
     setFever(false);
     setCombo(0);
+    setMaxCombo(0);
     setScore(0);
+    setFeverGauge(0);
+}
+
+void HDataManager::saveData()
+{
+    m_pCurrentGamer->setMaxCombo(getMaxCombo());
+    m_pCurrentGamer->setMaxScore(getScore());
 }

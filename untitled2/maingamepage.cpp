@@ -76,6 +76,9 @@ void MainGamePage::setFeverMode(const bool &bFever)
 
 void MainGamePage::gameOver()
 {
+    getComponent(OBJNAME_GAMEOVERPOPUP)->setProperty("strScore", HDataManager::instance()->getScore());
+    getComponent(OBJNAME_GAMEOVERPOPUP)->setProperty("strMaxCombo", HDataManager::instance()->getMaxCombo());
+
     getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(true);
 }
 
@@ -94,7 +97,10 @@ void MainGamePage::timerStart(const int &nTime)
 
 void MainGamePage::onLifeTimeEnd()
 {
+    HDataManager::instance()->saveData();
     gameOver();
+
+    HDataManager::instance()->dataInitialize();
 }
 
 void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)

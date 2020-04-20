@@ -31,10 +31,15 @@ public:
     void setCombo(const quint16 &nCombo);
     quint16 getCombo();
 
+    void setMaxCombo(const quint16 &nMaxCombo);
+    quint16 getMaxCombo();
+
     quint8 getFeverGauge() const;
     void setFeverGauge(const quint8 &nFeverGauge);
 
     void dataInitialize();
+
+    void saveData();
 
 protected:
     void initialize();
@@ -48,6 +53,7 @@ private :
     bool m_bFever;
     quint8 m_nFeverGauge;
     quint16 m_nCombo;
+    quint16 m_nMaxCombo;
     qulonglong m_nScore;
 };
 

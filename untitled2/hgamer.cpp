@@ -22,9 +22,10 @@ void HGamer::doDeleteLater(HGamer *pGamer)
 
 void HGamer::setMaxCombo(const quint16 &nMaxCombo)
 {
-    m_nMaxCombo = nMaxCombo;
-
-    qDebug() << "Max Combo : " << m_nMaxCombo;
+    if (m_nMaxCombo < nMaxCombo)
+    {
+        m_nMaxCombo = nMaxCombo;
+    }
 }
 
 quint16 HGamer::getMaxCombo()
@@ -34,9 +35,10 @@ quint16 HGamer::getMaxCombo()
 
 void HGamer::setMaxScore(const qulonglong &nMaxScore)
 {
-    m_nMaxScore = nMaxScore;
-
-    qDebug() << "Max Score : " << m_nMaxScore;
+    if (m_nMaxScore < nMaxScore)
+    {
+        m_nMaxScore = nMaxScore;
+    }
 }
 
 qulonglong HGamer::getMaxScore()
