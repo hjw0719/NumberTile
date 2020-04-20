@@ -85,8 +85,8 @@ void MainGamePage::gameOver()
 
     getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(true);
 
-    QEvent* pReleaseEvent = new QEvent(QEvent::MouseButtonRelease);
-    qApp->sendEvent(window(), pReleaseEvent);
+    QEvent releaseEvent = QEvent(QEvent::MouseButtonRelease);
+    qApp->sendEvent(window(), &releaseEvent);
 }
 
 void MainGamePage::gameStart()
