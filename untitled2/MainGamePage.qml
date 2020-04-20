@@ -5,12 +5,17 @@ import HEnum 1.0
 Page{
     id: id_mainGamePage
 
-    property int tileSize : 3
-    property int nLastNumber : tileSize * tileSize - 1
-    property int nFirstNumber : 1
+    property int tileSizeX : 3
+    property int tileSizeY : 3
+    property int nLastNumber : tileSizeX * tileSizeY - 1
+    property int nFirstNumber : nLastNumber + 2 - (tileSizeX * tileSizeY)
     property bool bFever : false
 
-    onTileSizeChanged: {
+    onTileSizeXChanged: {
+        // 변경된 사이즈로 모델 초기화.
+    }
+
+    onTileSizeYChanged: {
         // 변경된 사이즈로 모델 초기화.
     }
 
@@ -51,7 +56,8 @@ Page{
 
     Grid{
         id : id_grid
-        columns: tileSize
+        rows: tileSizeY
+        columns: tileSizeX
         height: parent.height * 0.75
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
@@ -60,7 +66,7 @@ Page{
         Repeater{
             id: id_tileList
             objectName: "id_tileList"
-            model : tileSize * tileSize
+            model : tileSizeX * tileSizeY
 
             delegate: Tile {
                 width: (id_mainGamePage.width - id_grid.spacing * 2)/3.0
@@ -80,7 +86,6 @@ Page{
                         {
                             // [1] Change Last, First Number
                             nLastNumber = nLastNumber + 1;
-                            nFirstNumber = nFirstNumber + 1;
 
                             // [2] 타일을 우선 비어있는 타일로 변경.
                             number = 0
@@ -119,19 +124,36 @@ Page{
 
             Component.onCompleted:
             {
-                initTile()
+                mixTile()
             }
 
-            function initTile()
+            function mixTile()
             {
-                for (var i = 0; i < id_tileList.count; i++)
+                var count = id_tileList.count
+                for (var i = 0; i < count; i++)
                 {
                     // Math.random() * count : 1~count 까지 랜덤하게 숫자가 생성됨. 따라서 Index 접근을 위해 -1 필요
-                    var swapA = Math.ceil(Math.random() * id_tileList.count) - 1
-                    var swapB = Math.ceil(Math.random() * id_tileList.count) - 1
+                    var swapA = Math.ceil(Math.random() * count) - 1
+                    var swapB = Math.ceil(Math.random() * count) - 1
 
                     swap(swapA, swapB)
                 }
+            }
+
+            function initData()
+            {
+                // init Last Number;
+                nLastNumber = tileSizeX * tileSizeY - 1
+
+                // init Tile
+                var count = id_tileList.count
+                for (var i = 0; i < count; i++)
+                {
+                    id_tileList.itemAt(i).number = i === (count - 1) ? 0 : i + 1
+                    id_tileList.itemAt(i).status = i === (count - 1) ? HEnum.E_TILE_STATUS_VACANCY : HEnum.E_TILE_STATUS_OCCUPY
+                }
+
+                mixTile()
             }
         }
     }

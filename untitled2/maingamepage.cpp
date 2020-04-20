@@ -84,10 +84,13 @@ void MainGamePage::gameOver()
 
 void MainGamePage::gameStart()
 {
-    QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initTile", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initData", Qt::QueuedConnection);
     getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(false);
     timerStart(LIFE_MAX_TIME);
     setRemainGauge(LIFE_MAX_TIME);
+
+    setScoreText(0);
+    setComboText(0);
 }
 
 void MainGamePage::timerStart(const int &nTime)
