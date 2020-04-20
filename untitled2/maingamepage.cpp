@@ -84,6 +84,9 @@ void MainGamePage::gameOver()
     getComponent(OBJNAME_GAMEOVERPOPUP)->setProperty("strMaxCombo", HDataManager::instance()->getMaxCombo());
 
     getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(true);
+
+    QEvent* pReleaseEvent = new QEvent(QEvent::MouseButtonRelease);
+    qApp->sendEvent(window(), pReleaseEvent);
 }
 
 void MainGamePage::gameStart()
@@ -94,7 +97,7 @@ void MainGamePage::gameStart()
 
 void MainGamePage::timerStart(const int &nTime)
 {
-//    m_pLifeTimer->setSingleShot(true);
+    m_pLifeTimer->setSingleShot(true);
     m_pLifeTimer->start(nTime);
 }
 
@@ -119,6 +122,7 @@ void MainGamePage::onLifeTimeEnd()
 
 void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 {
+    qDebug() << Q_FUNC_INFO <<m_pLifeTimer->isActive();
     if (!m_pLifeTimer->isActive())
     {
         return;
