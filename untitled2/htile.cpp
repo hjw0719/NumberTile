@@ -21,16 +21,16 @@ void HTile::initialize()
     m_eTileStatus = HEnum::E_TILE_STATUS_VACANCY;
 }
 
-quint64 HTile::getNumber() const
+uint64_t HTile::getNumber() const
 {
     return m_nNumber;
 }
 
 void HTile::setNumber(QVariant vNumber)
 {
-    if(vNumber.canConvert<quint64>())
+    if(vNumber.canConvert<uint64_t>())
     {
-        m_nNumber = vNumber.value<quint64>();
+        m_nNumber = vNumber.value<uint64_t>();
     }
     else
     {

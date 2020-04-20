@@ -63,12 +63,12 @@ void MainGamePage::setRemainGauge(int nRemainGauge)
     QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::QueuedConnection, Q_ARG(QVariant, nRemainGauge));
 }
 
-void MainGamePage::setScoreText(const qulonglong &nScore)
+void MainGamePage::setScoreText(const uint64_t &nScore)
 {
     getComponent(OBJNAME_SCORE)->setProperty("text", nScore);
 }
 
-void MainGamePage::setComboText(const quint16 &nCombo)
+void MainGamePage::setComboText(const uint16_t &nCombo)
 {
     getComponent(OBJNAME_LIFEGAUGE)->setProperty("combo", nCombo);
 }
@@ -111,6 +111,7 @@ void MainGamePage::startReadyCount()
 void MainGamePage::onLifeTimeEnd()
 {
     HDataManager::instance()->saveData();
+
     gameOver();
 
     HDataManager::instance()->dataInitialize();
@@ -118,6 +119,11 @@ void MainGamePage::onLifeTimeEnd()
 
 void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 {
+    if (!m_pLifeTimer->isActive())
+    {
+        return;
+    }
+
     switch(eUpdateUIType)
     {
     case HEnum::E_UPDATE_UI_SUCCESS_TOUCH :
@@ -159,7 +165,7 @@ void MainGamePage::reduceLifeTime()
     if (LIFE_REDUCE_INTERVAL > nTempRemainTime)
     {
         nTempRemainTime = 0;
-        gameOver();
+        onLifeTimeEnd();
         m_pLifeTimer->stop();
     }
     else

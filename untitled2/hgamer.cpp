@@ -22,7 +22,7 @@ void HGamer::doDeleteLater(HGamer *pGamer)
     pGamer->deleteLater();
 }
 
-void HGamer::setMaxCombo(const quint16 &nMaxCombo)
+void HGamer::setMaxCombo(const uint16_t &nMaxCombo)
 {
     if (m_nMaxCombo < nMaxCombo)
     {
@@ -30,12 +30,12 @@ void HGamer::setMaxCombo(const quint16 &nMaxCombo)
     }
 }
 
-quint16 HGamer::getMaxCombo()
+uint16_t HGamer::getMaxCombo()
 {
     return m_nMaxCombo;
 }
 
-void HGamer::setMaxScore(const qulonglong &nMaxScore)
+void HGamer::setMaxScore(const uint64_t &nMaxScore)
 {
     if (m_nMaxScore < nMaxScore)
     {
@@ -43,7 +43,7 @@ void HGamer::setMaxScore(const qulonglong &nMaxScore)
     }
 }
 
-qulonglong HGamer::getMaxScore()
+uint64_t HGamer::getMaxScore()
 {
     return m_nMaxScore;
 }
@@ -56,4 +56,35 @@ QString HGamer::getName() const
 void HGamer::setName(const QString &strName)
 {
     m_strName = strName;
+}
+
+//HGamer &HGamer::operator=(const HGamer &gamer)
+//{
+//    m_strName = gamer.m_strName;
+//    m_nMaxScore = gamer.m_nMaxScore;
+//    m_nMaxCombo = gamer.m_nMaxCombo;
+//    m_nRank = gamer.m_nRank;
+
+//    return *this;
+//}
+
+uint16_t HGamer::getRank() const
+{
+    return m_nRank;
+}
+
+void HGamer::setRank(const uint16_t &nRank)
+{
+    m_nRank = nRank;
+}
+
+QJsonObject HGamer::toJson()
+{
+    QJsonObject tempJson;
+    tempJson["name"] = getName();
+    tempJson["score"] = QString::number(getMaxScore());
+    tempJson["combo"] = getMaxCombo();
+    tempJson["rank"] = getRank();
+
+    return tempJson;
 }
