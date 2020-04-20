@@ -94,6 +94,7 @@ void MainGamePage::gameStart()
 
 void MainGamePage::timerStart(const int &nTime)
 {
+//    m_pLifeTimer->setSingleShot(true);
     m_pLifeTimer->start(nTime);
 }
 
@@ -189,8 +190,8 @@ void MainGamePage::onClickedRestartButton()
 {
     qDebug() << Q_FUNC_INFO;
 
+    m_nAddLifeTimeInterval = LIFE_ADD_INTERVAL_INIT;
     startReadyCount();
-
 }
 
 void MainGamePage::onClickedScoreBoardButton()

@@ -37,12 +37,17 @@ Item {
         target: id_gauge
         properties: "currentPercent"
         to: 0
+
     }
 
     function setRemainGauge(remainGauge)
     {
         id_animation.stop()
         currentPercent = remainGauge / maxGauge
+
+//        if (remainGauge === 0)
+//            return;
+
         id_animation.duration = remainGauge
         id_animation.from = currentPercent
         id_animation.start()

@@ -2,7 +2,7 @@
 #include <QSound>
 
 #include <HDefine.h>
-QSharedPointer<HSettingManager> obj = NULL;
+QSharedPointer<HSettingManager> settingObj = NULL;
 
 HSettingManager::HSettingManager(QObject *parent) :
         QObject(parent)
@@ -17,12 +17,12 @@ HSettingManager::~HSettingManager()
 
 HSettingManager *HSettingManager::instance()
 {
-    if (obj.isNull())
+    if (settingObj.isNull())
     {
-        obj = QSharedPointer<HSettingManager>(new HSettingManager, &HSettingManager::doDelete);
+        settingObj = QSharedPointer<HSettingManager>(new HSettingManager, &HSettingManager::doDelete);
     }
 
-    return obj.data();
+    return settingObj.data();
 }
 
 void HSettingManager::initialze()
