@@ -13,6 +13,10 @@ public:
 protected:
     void initialize() override;
 
+protected slots :
+
+    void onClickedRestartButton();
+    void onClickedTitleButton();
 
 };
 

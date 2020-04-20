@@ -7,16 +7,16 @@
 
 // 화면전환 및 화면 설정과 관련된 구현부.
 class HPage;
-class HLancherManager
+class HLauncherManager
 {
 private:
-    explicit HLancherManager();
-    ~HLancherManager();
+    explicit HLauncherManager();
+    ~HLauncherManager();
 
 public:
     void initialize();
     QQmlApplicationEngine *getEngine();
-    static HLancherManager *instance();
+    static HLauncherManager *instance();
 
     //화면 전환 관련 함수.
     void closePage();
@@ -33,7 +33,7 @@ protected:
 
 private:
     QQmlApplicationEngine *m_engine;
-    static HLancherManager* m_singleTonManager;
+    static HLauncherManager* m_singleTonManager;
     QQuickWindow *m_pWindow;
     QList<HPage *> m_tPageList;
 

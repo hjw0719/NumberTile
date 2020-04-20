@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    HLancherManager::instance()->initialize();
+    HLauncherManager::instance()->initialize();
     HDataManager::instance();
     return app.exec();
 }
