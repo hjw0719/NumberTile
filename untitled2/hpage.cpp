@@ -7,7 +7,7 @@
 
 HPage::HPage(QUrl urlSource) : m_qml(nullptr), m_urlSource(urlSource)
 {
-    auto engine = HLancherManager::instance()->getEngine();
+    auto engine = HLauncherManager::instance()->getEngine();
     QQmlComponent *pComponent = new QQmlComponent(engine, m_urlSource);
 
     m_qml = qobject_cast<QQuickItem*>(pComponent->create());

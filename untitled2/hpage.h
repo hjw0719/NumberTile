@@ -6,7 +6,7 @@
 
 class HPage : public QQuickItem
 {
-    friend class HLancherManager;
+    friend class HLauncherManager;
     Q_OBJECT
 public:
     explicit HPage(QUrl urlSource);
@@ -17,6 +17,7 @@ protected:
 
     QQuickItem *getComponent(const QString &strObjectName);
     void pageStop();
+
 protected:
     QQuickItem *m_qml;
 

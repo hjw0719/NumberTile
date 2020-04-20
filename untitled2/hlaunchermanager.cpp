@@ -8,13 +8,13 @@
 #include "scoreboardpage.h"
 #include "hsettingmanager.h"
 
-HLancherManager* HLancherManager::m_singleTonManager = NULL;
+HLauncherManager* HLauncherManager::m_singleTonManager = NULL;
 
-HLancherManager::HLancherManager()
+HLauncherManager::HLauncherManager()
 {
 }
 
-HLancherManager::~HLancherManager()
+HLauncherManager::~HLauncherManager()
 {
     foreach (auto pPage, m_tPageList)
     {
@@ -23,7 +23,7 @@ HLancherManager::~HLancherManager()
     }
 }
 
-void HLancherManager::initialize()
+void HLauncherManager::initialize()
 {
     m_engine = new QQmlApplicationEngine;
 
@@ -40,22 +40,22 @@ void HLancherManager::initialize()
     m_pWindow->show();
 }
 
-QQmlApplicationEngine *HLancherManager::getEngine()
+QQmlApplicationEngine *HLauncherManager::getEngine()
 {
     return m_engine;
 }
 
-HLancherManager *HLancherManager::instance()
+HLauncherManager *HLauncherManager::instance()
 {
     if (!m_singleTonManager)
     {
-        m_singleTonManager = new HLancherManager();
+        m_singleTonManager = new HLauncherManager();
     }
 
     return m_singleTonManager;
 }
 
-bool HLancherManager::pageTransition(const HEnum::EPageType ePageType, const HEnum::ETransitionType &eTransitionType)
+bool HLauncherManager::pageTransition(const HEnum::EPageType ePageType, const HEnum::ETransitionType &eTransitionType)
 {
     QString newPageObjectName = enumToString(ePageType);
 
@@ -115,12 +115,12 @@ bool HLancherManager::pageTransition(const HEnum::EPageType ePageType, const HEn
     return true;
 }
 
-QString HLancherManager::enumToString(const HEnum::EPageType &ePageType)
+QString HLauncherManager::enumToString(const HEnum::EPageType &ePageType)
 {
     return QVariant::fromValue(ePageType).toString();
 }
 
-void HLancherManager::createPage(const HEnum::EPageType ePageType)
+void HLauncherManager::createPage(const HEnum::EPageType ePageType)
 {
     HPage* pNewPage = Q_NULLPTR;
     switch (ePageType)
@@ -149,7 +149,7 @@ void HLancherManager::createPage(const HEnum::EPageType ePageType)
     }
 }
 
-void HLancherManager::deletePage(HPage *pDeletePage)
+void HLauncherManager::deletePage(HPage *pDeletePage)
 {
     if (pDeletePage)
     {
@@ -158,7 +158,7 @@ void HLancherManager::deletePage(HPage *pDeletePage)
     delete pDeletePage;
 }
 
-HPage *HLancherManager::getCurrentPage()
+HPage *HLauncherManager::getCurrentPage()
 {
     if (m_tPageList.size())
     {
@@ -167,7 +167,7 @@ HPage *HLancherManager::getCurrentPage()
     return nullptr;
 }
 
-void HLancherManager::pageClose()
+void HLauncherManager::pageClose()
 {
     if (2 > m_tPageList.size())
     {
@@ -183,7 +183,7 @@ void HLancherManager::pageClose()
     beforePage->setEnabled(true);
 }
 
-void HLancherManager::registerItem()
+void HLauncherManager::registerItem()
 {
     qmlRegisterType<HTile>("HTile", 1, 0, "HTile");
     qmlRegisterType<HEnum>("HEnum", 1, 0, "HEnum");

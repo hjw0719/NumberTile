@@ -1,5 +1,6 @@
 #include "maingamepage.h"
 
+#include "hlaunchermanager.h"
 #include "hdatamanager.h"
 #include "HDefine.h"
 #include <QMetaObject>
@@ -195,6 +196,8 @@ void MainGamePage::onClickedRestartButton()
 void MainGamePage::onClickedScoreBoardButton()
 {
     qDebug() << Q_FUNC_INFO;
+    HLauncherManager::instance()->pageTransition(HEnum::E_PAGE_SCORE_BOARD, HEnum::E_TRANSITION_SHOW_ALL_CLEAR);
+
 }
 
 void MainGamePage::onReadyCountOver()
