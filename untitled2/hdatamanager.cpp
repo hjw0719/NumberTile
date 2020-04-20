@@ -3,6 +3,7 @@
 #include "htile.h"
 #include "hgamer.h"
 #include "HDefine.h"
+#include "hsettingmanager.h"
 
 #include <QTimer>
 
@@ -58,6 +59,9 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
         // [3] Check & Add Max Combo;
         setMaxCombo(getCombo());
 
+        // [3] Check & Add Max Combo;
+        HSettingManager::instance()->setPlaySoundStatus(HEnum::E_SOUND_TILE_SUCCESS, true);
+
         emit updateUI(HEnum::E_UPDATE_UI_SUCCESS_TOUCH);
 
         // [3] Check Fever.
@@ -77,6 +81,8 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
     {
         // [1] init Combo.
         setCombo(0);
+
+        HSettingManager::instance()->setPlaySoundStatus(HEnum::E_SOUND_TILE_FAIL, true);
 
         emit updateUI(HEnum::E_UPDATE_UI_FAIL_TOUCH);
     }   break;

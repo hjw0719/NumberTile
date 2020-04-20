@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sound/tile_touch_fail.WAV</file>
+        <file>sound/tile_touch_success.WAV</file>
+    </qresource>
+</RCC>

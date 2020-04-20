@@ -6,6 +6,7 @@
 #include "HDefine.h"
 #include "titlepage.h"
 #include "scoreboardpage.h"
+#include "hsettingmanager.h"
 
 HLancherManager* HLancherManager::m_singleTonManager = NULL;
 
@@ -28,7 +29,7 @@ void HLancherManager::initialize()
 
     m_pWindow = new QQuickWindow;
     registerItem();
-
+    HSettingManager::instance()->initialze();
 
 #ifdef Q_OS_WIN
     m_pWindow->setWidth(DESKTOP_OS_WIDTH);

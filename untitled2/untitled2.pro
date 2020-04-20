@@ -1,4 +1,4 @@
-QT += quick
+QT += quick multimedia
 
 CONFIG += c++11
 
@@ -18,6 +18,7 @@ SOURCES += \
         hgamer.cpp \
         hlaunchermanager.cpp \
         hpage.cpp \
+        hsettingmanager.cpp \
         htile.cpp \
         hwindow.cpp \
         main.cpp \
@@ -25,7 +26,8 @@ SOURCES += \
         scoreboardpage.cpp \
         titlepage.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    resource/resource.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -50,6 +52,7 @@ HEADERS += \
     hgamer.h \
     hlaunchermanager.h \
     hpage.h \
+    hsettingmanager.h \
     htile.h \
     hwindow.h \
     maingamepage.h \

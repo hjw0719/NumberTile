@@ -54,6 +54,19 @@ public :
 
     Q_ENUM(ETransitionType)
 
+    enum ESoundType
+    {
+        E_SOUND_BGM = 0,
+        E_SOUND_FEVER_BGM,
+        E_SOUND_FEVER_TOUCH,
+        E_SOUND_TILE_SUCCESS,
+        E_SOUND_TILE_FAIL,
+        E_SOUND_BUTTON_TOUCH,
+        E_SOUND_MAX,
+    };
+
+    Q_ENUM(ESoundType)
+
 };
 
 // Qt가 해당 enum값을 알 수 있게 등록.
