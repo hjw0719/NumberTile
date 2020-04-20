@@ -181,6 +181,22 @@ QJsonArray HDataManager::convertRankListToJsonArray()
     return array;
 }
 
+bool HDataManager::highScoreThan(const QSharedPointer<HGamer> &pGamer1, const QSharedPointer<HGamer> &pGamer2)
+{
+    uint64_t pGamer1Score = pGamer1->getMaxScore();
+    uint64_t pGamer2Score = pGamer2->getMaxScore();
+
+
+    if (pGamer1Score == pGamer2Score)
+    {
+        return pGamer1->getMaxCombo() > pGamer2->getMaxCombo();
+    }
+    else
+    {
+        return pGamer1Score > pGamer2Score;
+    }
+}
+
 uint8_t HDataManager::getFeverGauge() const
 {
     return m_nFeverGauge;
@@ -206,7 +222,13 @@ void HDataManager::saveData()
     pGamer->setMaxCombo(getMaxCombo());
     pGamer->setMaxScore(getScore());
 
-    calculateRank(pGamer);
-
     m_tRankList.append(pGamer);
+
+    qSort(m_tRankList.begin(), m_tRankList.end(), highScoreThan);
+
+    for (int i = 0; i < m_tRankList.count(); i++)
+    {
+        QSharedPointer<HGamer> tGamer = m_tRankList.at(i);
+        tGamer->setRank(i+1);
+    }
 }

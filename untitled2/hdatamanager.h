@@ -42,6 +42,8 @@ public:
     void saveData();
 
     QJsonArray convertRankListToJsonArray();
+
+    static bool highScoreThan(const QSharedPointer<HGamer> &pGamer1, const QSharedPointer<HGamer> &pGamer2);
 protected:
     void initialize();
     void calculateRank(QSharedPointer<HGamer> pGamer);
