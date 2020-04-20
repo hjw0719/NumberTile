@@ -25,36 +25,39 @@ public:
     void setFever(const bool &bFever);
     bool getFever();
 
-    void setScore(const qulonglong &nScore);
-    qulonglong getScore();
+    void setScore(const uint64_t &nScore);
+    uint64_t getScore();
 
-    void setCombo(const quint16 &nCombo);
-    quint16 getCombo();
+    void setCombo(const uint16_t &nCombo);
+    uint16_t getCombo();
 
-    void setMaxCombo(const quint16 &nMaxCombo);
-    quint16 getMaxCombo();
+    void setMaxCombo(const uint16_t &nMaxCombo);
+    uint16_t getMaxCombo();
 
-    quint8 getFeverGauge() const;
-    void setFeverGauge(const quint8 &nFeverGauge);
+    uint8_t getFeverGauge() const;
+    void setFeverGauge(const uint8_t &nFeverGauge);
 
     void dataInitialize();
 
     void saveData();
 
+    QJsonArray convertRankListToJsonArray();
 protected:
     void initialize();
+    void calculateRank(QSharedPointer<HGamer> pGamer);
 
 signals :
     void updateUI(HEnum::EUpdateUIType eUpdateUIType);
     void feverChanged(bool bFever);
 
 private :
-    QSharedPointer<HGamer> m_pCurrentGamer;
+//    QSharedPointer<HGamer> m_pCurrentGamer; // DB 시스템 들어가면 사용 예정.
     bool m_bFever;
-    quint8 m_nFeverGauge;
-    quint16 m_nCombo;
-    quint16 m_nMaxCombo;
-    qulonglong m_nScore;
+    uint8_t m_nFeverGauge;
+    uint16_t m_nCombo;
+    uint16_t m_nMaxCombo;
+    uint64_t m_nScore;
+    QList<QSharedPointer<HGamer>> m_tRankList;
 };
 
 #endif // HDATAMANAGER_H

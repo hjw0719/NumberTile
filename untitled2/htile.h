@@ -19,7 +19,7 @@ public:
 
     void initialize();
 
-    quint64 getNumber() const;
+    uint64_t getNumber() const;
     void setNumber(QVariant vNumber);
 
     HEnum::ETileStatus getTileStatus() const;
@@ -34,7 +34,7 @@ signals :
     void tileStatusChanged();
 
 private :
-    quint64 m_nNumber;
+    uint64_t m_nNumber;
     HEnum::ETileStatus m_eTileStatus;
 };
 

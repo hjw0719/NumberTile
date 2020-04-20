@@ -2,6 +2,7 @@
 
 #include "hpage.h"
 #include "htile.h"
+#include "hgamer.h"
 #include "maingamepage.h"
 #include "HDefine.h"
 #include "titlepage.h"

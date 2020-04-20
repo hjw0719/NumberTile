@@ -16,8 +16,8 @@ public:
 
 protected:
     void setRemainGauge(int nRemainGauge);
-    void setScoreText(const qulonglong &nScore);
-    void setComboText(const quint16 &nCombo);
+    void setScoreText(const uint64_t &nScore);
+    void setComboText(const uint16_t &nCombo);
     void setFeverMode(const bool &bFever);
     void gameOver();
     void gameStart();

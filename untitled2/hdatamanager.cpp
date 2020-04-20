@@ -4,6 +4,8 @@
 #include "hgamer.h"
 #include "HDefine.h"
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QTimer>
 
 QSharedPointer<HDataManager> obj = NULL;
@@ -39,11 +41,6 @@ void HDataManager::doDelete(HDataManager *manager)
 
 void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
 {
-    if (m_pCurrentGamer.isNull())
-    {
-        return;
-    }
-
     switch(eTouchStatus)
     {
     case HEnum::E_TOUCH_STATUS_SUCCESS :
@@ -86,17 +83,17 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
     // update UI
 }
 
-void HDataManager::setScore(const qulonglong &nScore)
+void HDataManager::setScore(const uint64_t &nScore)
 {
     m_nScore = nScore;
 }
 
-qulonglong HDataManager::getScore()
+uint64_t HDataManager::getScore()
 {
     return m_nScore;
 }
 
-void HDataManager::setCombo(const quint16 &nCombo)
+void HDataManager::setCombo(const uint16_t &nCombo)
 {
     m_nCombo = nCombo;
 
@@ -113,12 +110,12 @@ void HDataManager::setCombo(const quint16 &nCombo)
     }
 }
 
-quint16 HDataManager::getCombo()
+uint16_t HDataManager::getCombo()
 {
     return m_nCombo;
 }
 
-void HDataManager::setMaxCombo(const quint16 &nMaxCombo)
+void HDataManager::setMaxCombo(const uint16_t &nMaxCombo)
 {
     if (m_nMaxCombo < nMaxCombo)
     {
@@ -126,7 +123,7 @@ void HDataManager::setMaxCombo(const quint16 &nMaxCombo)
     }
 }
 
-quint16 HDataManager::getMaxCombo()
+uint16_t HDataManager::getMaxCombo()
 {
     return m_nMaxCombo;
 }
@@ -145,33 +142,65 @@ bool HDataManager::getFever()
 
 void HDataManager::initialize()
 {
-    if (m_pCurrentGamer.isNull())
+//    if (m_pCurrentGamer.isNull())
+//    {
+//        m_pCurrentGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
+    //    }
+}
+
+void HDataManager::calculateRank(QSharedPointer<HGamer> pGamer)
+{
+    if(m_tRankList.isEmpty())
     {
-        m_pCurrentGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
+        pGamer->setRank(1);
+    }
+    else
+    {
+        pGamer->setRank(2);
     }
 }
 
-quint8 HDataManager::getFeverGauge() const
+QJsonArray HDataManager::convertRankListToJsonArray()
+{
+    QJsonArray array;
+    for (int i= 0 ; i < m_tRankList.count(); i++)
+    {
+        QSharedPointer<HGamer> pGamer = m_tRankList.at(i);
+        if (!pGamer.isNull())
+        {
+            array.append(pGamer->toJson());
+        }
+    }
+
+    return array;
+}
+
+uint8_t HDataManager::getFeverGauge() const
 {
     return m_nFeverGauge;
 }
 
-void HDataManager::setFeverGauge(const quint8 &nFeverGauge)
+void HDataManager::setFeverGauge(const uint8_t &nFeverGauge)
 {
     m_nFeverGauge = nFeverGauge;
 }
 
 void HDataManager::dataInitialize()
 {
-    setFever(false);
-    setCombo(0);
-    setMaxCombo(0);
-    setScore(0);
-    setFeverGauge(0);
+    m_bFever = false;
+    m_nCombo = 0;
+    m_nMaxCombo =0;
+    m_nScore = 0;
+    m_nFeverGauge = 0;
 }
 
 void HDataManager::saveData()
 {
-    m_pCurrentGamer->setMaxCombo(getMaxCombo());
-    m_pCurrentGamer->setMaxScore(getScore());
+    QSharedPointer<HGamer> pGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
+    pGamer->setMaxCombo(getMaxCombo());
+    pGamer->setMaxScore(getScore());
+
+    calculateRank(pGamer);
+
+    m_tRankList.append(pGamer);
 }

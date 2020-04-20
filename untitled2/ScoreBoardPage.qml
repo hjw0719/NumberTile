@@ -6,6 +6,8 @@ Page {
     signal clickedRestartButton()
     signal clickedTitleButton()
 
+    property variant rankModel;
+
     Rectangle{
         id : id_background
         width : parent.width / 5 * 4
@@ -23,7 +25,7 @@ Page {
         ListView{
             anchors.fill: parent
             delegate : id_delegate
-            model : id_model
+            model : rankModel
             currentIndex: 1
             clip: true
             snapMode: ListView.SnapToItem
@@ -39,32 +41,42 @@ Page {
                     z : 2
 
                     Text{
-                        id : id_name
-                        width : parent.width / 3
+                        id : id_rank
+                        width : parent.width / 4
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
+                        text : "Rank"
+                        font.pixelSize: 15
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text{
+                        id : id_name
+                        width : parent.width / 4
+                        anchors.left: id_rank.right
+                        anchors.verticalCenter: parent.verticalCenter
                         text : "Name"
-                        font.pixelSize: 20
+                        font.pixelSize: 15
                         horizontalAlignment: Text.AlignHCenter
                     }
 
                     Text{
                         id : id_score
-                        width : parent.width / 3
+                        width : parent.width / 4
                         anchors.left: id_name.right
                         anchors.verticalCenter: parent.verticalCenter
                         text : "Score"
-                        font.pixelSize: 20
+                        font.pixelSize: 15
                         horizontalAlignment: Text.AlignHCenter
                     }
 
                     Text{
                         id : id_combo
-                        width : parent.width / 3
+                        width : parent.width / 4
                         anchors.left: id_score.right
                         anchors.verticalCenter: parent.verticalCenter
                         text : "Combo"
-                        font.pixelSize: 20
+                        font.pixelSize: 15
                         horizontalAlignment: Text.AlignHCenter
                     }
                 }
@@ -86,75 +98,46 @@ Page {
             width : id_background.width;
             height : id_background.height / 10
 
+
             Text{
-                id : id_name
-                width : parent.width / 3
+                id : id_rank
+                width : parent.width / 4
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                text : name
-                font.pixelSize: 20
+                text : modelData.rank
+                font.pixelSize: 15
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text{
+                id : id_name
+                width : parent.width / 4
+                anchors.left: id_rank.right
+                anchors.verticalCenter: parent.verticalCenter
+                text : modelData.name
+                font.pixelSize: 15
                 horizontalAlignment: Text.AlignHCenter
             }
 
             Text{
                 id : id_score
-                width : parent.width / 3
+                width : parent.width / 4
                 anchors.left: id_name.right
                 anchors.verticalCenter: parent.verticalCenter
-                text : score
-                font.pixelSize: 20
+                text : modelData.score
+                font.pixelSize: 15
                 horizontalAlignment: Text.AlignHCenter
             }
 
             Text{
                 id : id_combo
-                width : parent.width / 3
+                width : parent.width / 4
                 anchors.left: id_score.right
                 anchors.verticalCenter: parent.verticalCenter
-                text : combo
-                font.pixelSize: 20
+                text : modelData.combo
+                font.pixelSize: 15
                 horizontalAlignment: Text.AlignHCenter
             }
-        }
-    }
-
-    ListModel{
-        id : id_model
-        ListElement{
-            name : "홍길동"
-            score : "300"
-            combo : "3"
-        }
-        ListElement{
-            name : "홍길동"
-            score : "1000"
-            combo : "3"
-        }
-        ListElement{
-            name : "홍길동"
-            score : "1000"
-            combo : "7"
-        }
-
-        ListElement{
-            name : "홍길동"
-            score : "1000"
-            combo : "7"
-        }
-        ListElement{
-            name : "홍길동"
-            score : "1000"
-            combo : "7"
-        }
-        ListElement{
-            name : "홍길동"
-            score : "1000"
-            combo : "7"
-        }
-        ListElement{
-            name : "홍길동"
-            score : "1000"
-            combo : "7"
         }
     }
 
