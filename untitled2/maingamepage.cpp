@@ -8,6 +8,7 @@
 #define OBJNAME_LIFEGAUGE "id_lifeGauge"
 #define OBJNAME_SCORE "id_score"
 #define OBJNAME_GAMEOVERPOPUP "id_gamaOverPopup"
+#define OBJNAME_READYCOUNT "id_readyCount"
 
 MainGamePage::MainGamePage() :
     HPage(QUrl("qrc:/MainGamePage.qml")),
@@ -35,7 +36,9 @@ void MainGamePage::initialize()
 
     getComponent(OBJNAME_LIFEGAUGE)->setProperty("maxGauge", LIFE_MAX_TIME);
 
-    gameStart();
+    connect(getComponent(OBJNAME_READYCOUNT), SIGNAL(countOver()), this, SLOT(onReadyCountOver()));
+
+    startReadyCount();
 }
 
 void MainGamePage::reduceAddtimeInterval()
@@ -84,18 +87,23 @@ void MainGamePage::gameOver()
 
 void MainGamePage::gameStart()
 {
-    QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initData", Qt::QueuedConnection);
-    getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(false);
-    timerStart(LIFE_MAX_TIME);
     setRemainGauge(LIFE_MAX_TIME);
-
-    setScoreText(0);
-    setComboText(0);
+    timerStart(LIFE_MAX_TIME);
 }
 
 void MainGamePage::timerStart(const int &nTime)
 {
     m_pLifeTimer->start(nTime);
+}
+
+void MainGamePage::startReadyCount()
+{
+    QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initData", Qt::QueuedConnection);
+    getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(false);
+    setScoreText(0);
+    setComboText(0);
+    getComponent(OBJNAME_LIFEGAUGE)->setProperty("currentPercent", 1);
+    getComponent(OBJNAME_READYCOUNT)->setProperty("readyCountNumber", READY_COUNT_MAX);
 }
 
 void MainGamePage::onLifeTimeEnd()
@@ -180,10 +188,17 @@ void MainGamePage::onClickedRestartButton()
 {
     qDebug() << Q_FUNC_INFO;
 
-    gameStart();
+    startReadyCount();
+
 }
 
 void MainGamePage::onClickedScoreBoardButton()
 {
     qDebug() << Q_FUNC_INFO;
+}
+
+void MainGamePage::onReadyCountOver()
+{
+    qDebug() << Q_FUNC_INFO;
+    gameStart();
 }

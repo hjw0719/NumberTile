@@ -22,6 +22,7 @@ protected:
     void gameOver();
     void gameStart();
     void timerStart(const int &nTime);
+    void startReadyCount();
 
 protected slots :
     void onLifeTimeEnd();
@@ -30,6 +31,8 @@ protected slots :
     void addLifeTime();
     void onClickedRestartButton();
     void onClickedScoreBoardButton();
+    void onReadyCountOver();
+
 private:
     QTimer *m_pLifeTimer;
     int m_nAddLifeTimeInterval;

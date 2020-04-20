@@ -11,7 +11,7 @@ HTile {
         id : id_background
         anchors.fill: parent
         color: HEnum.E_TILE_STATUS_FEVER === id_tile.status ? "green"
-                                                            : HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? "yellow"
+                                                            : HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? "orange"
                                                                                                             : "gray"
         opacity: 0.8
         Text {
@@ -19,6 +19,10 @@ HTile {
             text: HEnum.E_TILE_STATUS_OCCUPY === id_tile.status ? id_tile.number : ""
             font.pixelSize: 30
         }
+
+        scale: id_mouseArea.pressed ? 0.8 : 1
+
+        radius: 20
     }
 
     MouseArea {

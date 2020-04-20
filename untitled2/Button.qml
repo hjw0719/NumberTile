@@ -14,6 +14,7 @@ Item {
         color: id_mouseArea.pressed ? "gray" : "white"
         border.color: "black"
         border.width: 1
+        radius: 20
     }
 
     Text {

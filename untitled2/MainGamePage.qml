@@ -181,7 +181,7 @@ Page{
         signal clickedRestartButton()
         signal clickedScoreBoardButton()
 
-        Item {
+        Rectangle {
             height: parent.height/2
             width: parent.width/1.5
             anchors.centerIn: parent
@@ -233,6 +233,48 @@ Page{
                 onClicked:{
                     console.log("id_moveScoreBoard")
                     id_gamaOverPopup.clickedScoreBoardButton()
+                }
+            }
+        }
+    }
+
+
+    PopupLayer {
+        id: id_readyCount
+        objectName: "id_readyCount"
+        property int readyCountNumber: 2
+        signal countOver()
+        visible: false
+
+        onReadyCountNumberChanged: {
+            if (readyCountNumber)
+            {
+                visible = true
+            }
+
+            id_readyCountChangeTimer.start()
+        }
+
+        Text {
+            id: id_readyCountNumber
+            anchors.centerIn: parent
+            text: parent.readyCountNumber
+            font.pixelSize: 40
+
+        }
+
+        Timer{
+            id: id_readyCountChangeTimer
+            interval: 1000
+            onTriggered: {
+                if (1 == parent.readyCountNumber)
+                {
+                    parent.visible = false
+                    parent.countOver()
+                }
+                else
+                {
+                    parent.readyCountNumber--
                 }
             }
         }
