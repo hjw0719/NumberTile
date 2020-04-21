@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 Item {
     property string strButtonText: "button"
+    property int buttonRaius: 20
     signal clicked()
     MouseArea {
         id: id_mouseArea
@@ -14,7 +15,7 @@ Item {
         color: id_mouseArea.pressed ? "gray" : "white"
         border.color: "black"
         border.width: 1
-        radius: 20
+        radius: buttonRaius
     }
 
     Text {

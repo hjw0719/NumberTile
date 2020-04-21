@@ -21,8 +21,12 @@ protected:
     void setFeverMode(const bool &bFever);
     void gameOver();
     void gameStart();
-    void timerStart(const int &nTime);
-    void startReadyCount();
+    void timerStart();
+    void timerPaused();
+    void timerStop();
+    qreal getRemainingTime();
+    bool getisTimerRunning();
+    void startReadyCount(bool bInit = true);
 
 protected slots :
     void onLifeTimeEnd();
@@ -32,9 +36,9 @@ protected slots :
     void onClickedRestartButton();
     void onClickedScoreBoardButton();
     void onReadyCountOver();
+    void onResumedButton();
 
 private:
-    QTimer *m_pLifeTimer;
     int m_nAddLifeTimeInterval;
 
 };

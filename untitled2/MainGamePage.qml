@@ -31,6 +31,16 @@ Page{
         }
     }
 
+    Button{
+        id: id_resumedButton
+        objectName: "id_resumedButton"
+        width: parent.width / 15
+        height: parent.width / 15
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        strButtonText: ""
+        buttonRaius: 0
+    }
 
     Text{
         id: id_score

@@ -10,10 +10,11 @@
 #define OBJNAME_SCORE "id_score"
 #define OBJNAME_GAMEOVERPOPUP "id_gamaOverPopup"
 #define OBJNAME_READYCOUNT "id_readyCount"
+#define OBJNAME_RESUMEBUTTON "id_resumedButton"
 
 MainGamePage::MainGamePage() :
     HPage(QUrl("qrc:/MainGamePage.qml")),
-    m_pLifeTimer(new QTimer),
+//    m_pLifeTimer(new QTimer),
     m_nAddLifeTimeInterval(LIFE_ADD_INTERVAL_INIT)
 {
     initialize();
@@ -21,28 +22,20 @@ MainGamePage::MainGamePage() :
 
 MainGamePage::~MainGamePage()
 {
-    if (m_pLifeTimer)
-    {
-        delete m_pLifeTimer;
-        m_pLifeTimer = NULL;
-    }
+
 }
 
 void MainGamePage::initialize()
 {
     HPage::initialize();
-
-    connect(HDataManager::instance(), SIGNAL(updateUI(HEnum::EUpdateUIType)), this, SLOT(onUpdateUI(HEnum::EUpdateUIType)));
-
-    connect(getComponent(OBJNAME_GAMEOVERPOPUP), SIGNAL(clickedRestartButton()), this, SLOT(onClickedRestartButton()));
-    connect(getComponent(OBJNAME_GAMEOVERPOPUP), SIGNAL(clickedScoreBoardButton()), this, SLOT(onClickedScoreBoardButton()));
-
-    QObject::connect(m_pLifeTimer, SIGNAL(timeout()), this, SLOT(onLifeTimeEnd()));
-
     getComponent(OBJNAME_LIFEGAUGE)->setProperty("maxGauge", LIFE_MAX_TIME);
 
-    connect(getComponent(OBJNAME_READYCOUNT), SIGNAL(countOver()), this, SLOT(onReadyCountOver()));
-
+    connect(HDataManager::instance(),               SIGNAL(updateUI(HEnum::EUpdateUIType)), this,   SLOT(onUpdateUI(HEnum::EUpdateUIType)));
+    connect(getComponent(OBJNAME_GAMEOVERPOPUP),    SIGNAL(clickedRestartButton()),         this,   SLOT(onClickedRestartButton()));
+    connect(getComponent(OBJNAME_GAMEOVERPOPUP),    SIGNAL(clickedScoreBoardButton()),      this,   SLOT(onClickedScoreBoardButton()));
+    connect(getComponent(OBJNAME_LIFEGAUGE),        SIGNAL(timeOver()),                     this,   SLOT(onLifeTimeEnd()));
+    connect(getComponent(OBJNAME_READYCOUNT),       SIGNAL(countOver()),                    this,   SLOT(onReadyCountOver()));
+    connect(getComponent(OBJNAME_RESUMEBUTTON),     SIGNAL(clicked()),                      this,   SLOT(onResumedButton()));
     startReadyCount();
 }
 
@@ -64,7 +57,9 @@ void MainGamePage::reduceAddtimeInterval()
 
 void MainGamePage::setRemainGauge(int nRemainGauge)
 {
-    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::QueuedConnection, Q_ARG(QVariant, nRemainGauge));
+    //gauge의 남은시간을 조정하는 함수로 running 상태를 해당함수로 바꿀수는 없다.
+    qDebug() << Q_FUNC_INFO << nRemainGauge;
+    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "setRemainGauge", Qt::DirectConnection, Q_ARG(QVariant, nRemainGauge));
 }
 
 void MainGamePage::setScoreText(const uint64_t &nScore)
@@ -95,26 +90,53 @@ void MainGamePage::gameOver()
 
 void MainGamePage::gameStart()
 {
-    setRemainGauge(LIFE_MAX_TIME);
-    timerStart(LIFE_MAX_TIME);
+//    setRemainGauge(LIFE_MAX_TIME);
+//    timerStart();
 }
 
-void MainGamePage::timerStart(const int &nTime)
+void MainGamePage::timerStart()
 {
-    if (m_pLifeTimer)
+    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "timerStart", Qt::DirectConnection);
+}
+
+void MainGamePage::timerPaused()
+{
+    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "timerPaused", Qt::DirectConnection);
+}
+
+void MainGamePage::timerStop()
+{
+    QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "timerStop", Qt::DirectConnection);
+}
+
+qreal MainGamePage::getRemainingTime()
+{
+   QVariant nRemaining = 0;
+   QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "getRemainingTime", Qt::DirectConnection, Q_RETURN_ARG(QVariant, nRemaining));
+
+   return nRemaining.toReal();
+}
+
+bool MainGamePage::getisTimerRunning()
+{
+    QVariant bIsTimerRunning = false;
+    bool bSuccess = false;
+    bSuccess = QMetaObject::invokeMethod(getComponent(OBJNAME_LIFEGAUGE), "getIsTimerRunning", Qt::DirectConnection, Q_RETURN_ARG(QVariant, bIsTimerRunning));
+    qDebug() << Q_FUNC_INFO << bSuccess;
+    return bIsTimerRunning.toBool();
+}
+
+void MainGamePage::startReadyCount(bool bInit)
+{
+    if (bInit)
     {
-        m_pLifeTimer->setSingleShot(true);
-        m_pLifeTimer->start(nTime);
+        QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initData", Qt::DirectConnection);
+        getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(false);
+        setScoreText(0);
+        setComboText(0);
+        getComponent(OBJNAME_LIFEGAUGE)->setProperty("currentPercent", 1);
+        setRemainGauge(LIFE_MAX_TIME);
     }
-}
-
-void MainGamePage::startReadyCount()
-{
-    QMetaObject::invokeMethod(getComponent(OBJNAME_TILELIST), "initData", Qt::QueuedConnection);
-    getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(false);
-    setScoreText(0);
-    setComboText(0);
-    getComponent(OBJNAME_LIFEGAUGE)->setProperty("currentPercent", 1);
     getComponent(OBJNAME_READYCOUNT)->setProperty("readyCountNumber", READY_COUNT_MAX);
 }
 
@@ -129,13 +151,10 @@ void MainGamePage::onLifeTimeEnd()
 
 void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 {
-    if (m_pLifeTimer)
+    qDebug() << Q_FUNC_INFO << getisTimerRunning();
+    if (!getisTimerRunning())
     {
-        qDebug() << Q_FUNC_INFO <<m_pLifeTimer->isActive();
-        if (!m_pLifeTimer->isActive())
-        {
-            return;
-        }
+        return;
     }
 
     switch(eUpdateUIType)
@@ -174,40 +193,36 @@ void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 void MainGamePage::reduceLifeTime()
 {
     // 잘못된 선택에 의한 life gage 감소.
-    if (!m_pLifeTimer)
-    {
-        return;
-    }
+    int nTempRemainTime = getRemainingTime() - LIFE_REDUCE_INTERVAL;
+    qDebug() << Q_FUNC_INFO << getRemainingTime() << " " << LIFE_REDUCE_INTERVAL;
 
-    int nTempRemainTime = m_pLifeTimer->remainingTime() - LIFE_REDUCE_INTERVAL;
-    qDebug() << Q_FUNC_INFO << m_pLifeTimer->remainingTime() << " " << LIFE_REDUCE_INTERVAL;
     if (LIFE_REDUCE_INTERVAL > nTempRemainTime)
     {
-        nTempRemainTime = 0;
-        onLifeTimeEnd();
-        m_pLifeTimer->stop();
+        setRemainGauge(0);
+        timerStop();
+//        onLifeTimeEnd();
     }
     else
     {
-        timerStart(nTempRemainTime);
+        setRemainGauge(nTempRemainTime);
+        timerStart();
     }
 
-    setRemainGauge(nTempRemainTime);
 }
 
 void MainGamePage::addLifeTime()
 {
     // 정확한 선택에 의한 life gage 증가.
-    int nTempRemainTime = m_pLifeTimer->remainingTime() + m_nAddLifeTimeInterval;
-    qDebug() << Q_FUNC_INFO << m_pLifeTimer->remainingTime() << " " << m_nAddLifeTimeInterval;
+    qreal nTempRemainTime = getRemainingTime() + m_nAddLifeTimeInterval;
+    qDebug() << Q_FUNC_INFO << getRemainingTime() << " " << m_nAddLifeTimeInterval;
 
     if (LIFE_MAX_TIME <= nTempRemainTime)
     {
         nTempRemainTime = LIFE_MAX_TIME;
     }
+
     setRemainGauge(nTempRemainTime);
-    m_pLifeTimer->stop();
-    timerStart(nTempRemainTime);
+    timerStart();
     reduceAddtimeInterval();
 }
 
@@ -229,5 +244,19 @@ void MainGamePage::onClickedScoreBoardButton()
 void MainGamePage::onReadyCountOver()
 {
     qDebug() << Q_FUNC_INFO;
-    gameStart();
+    timerStart();
+}
+
+void MainGamePage::onResumedButton()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (getisTimerRunning())
+    {
+        timerPaused();
+    }
+    else
+    {
+        startReadyCount(false);
+    }
 }
