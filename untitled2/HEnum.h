@@ -40,7 +40,8 @@ public :
     {
         E_PAGE_TITLE_PAGE = 0,
         E_PAGE_MAIN_GAME,
-        E_PAGE_SCORE_BOARD
+        E_PAGE_SCORE_BOARD,
+        E_PAGE_SETTING
     };
 
     Q_ENUM(EPageType)

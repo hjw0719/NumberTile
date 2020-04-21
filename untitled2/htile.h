@@ -28,6 +28,7 @@ public:
 protected slots :
     void onSuccessTouched();
     void onFailTouched();
+    void onSaveTileNumber();
 
 signals :
     void numberChanged();

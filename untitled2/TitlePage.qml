@@ -3,6 +3,7 @@ import QtQuick 2.0
 Page {
     id: id_titlePage
 
+
     MouseArea{
         id: id_mouseArea
         objectName: "id_mouseArea"
@@ -10,6 +11,17 @@ Page {
         onClicked: clickedPage()
         signal clickedPage()
     }
+
+    SettingButton{
+        width: 60
+        height: 60
+
+        anchors.top: parent.top
+        anchors.topMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+    }
+
 
     Text {
         id: id_titleText

@@ -15,6 +15,7 @@ protected:
 
 protected slots:
     void onClickedPage();
+    void onClickedSettingButton();
 };
 
 #endif // TITLEPAGE_H

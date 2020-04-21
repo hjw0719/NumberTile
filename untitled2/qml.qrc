@@ -9,5 +9,7 @@
         <file>Page.qml</file>
         <file>ScoreBoardPage.qml</file>
         <file>Button.qml</file>
+        <file>SettingPage.qml</file>
+        <file>SettingButton.qml</file>
     </qresource>
 </RCC>
