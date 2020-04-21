@@ -57,11 +57,6 @@ HLauncherManager *HLauncherManager::instance()
     return m_singleTonManager;
 }
 
-void HLauncherManager::closePage()
-{
-
-}
-
 bool HLauncherManager::pageTransition(const HEnum::EPageType ePageType, const HEnum::ETransitionType &eTransitionType)
 {
     QString newPageObjectName = enumToString(ePageType);
@@ -99,10 +94,12 @@ bool HLauncherManager::pageTransition(const HEnum::EPageType ePageType, const HE
 
     case HEnum::E_TRANSITION_SHOW_RETURN:
     {
+        QList<HPage *> deletePageList;
         for (int i = m_tPageList.size() -1; i >= 0; i--)
         {
             auto pPage = m_tPageList.at(i);
             QString strTempPageObjectName = pPage->objectName();
+
             if (!strTempPageObjectName.compare(newPageObjectName))
             {
                 pPage->setParentItem(m_pWindow->contentItem());
@@ -111,9 +108,15 @@ bool HLauncherManager::pageTransition(const HEnum::EPageType ePageType, const HE
             }
             else
             {
-                deletePage(pPage);
-                delete pPage;
+//                deletePage(pPage);
+//                delete pPage;
+                deletePageList.append(pPage);
             }
+        }
+
+        foreach (auto pDeletePage, deletePageList)
+        {
+            delete pDeletePage;
         }
     }   break;
     default : return false;
