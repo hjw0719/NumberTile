@@ -19,6 +19,7 @@ SOURCES += \
         hlaunchermanager.cpp \
         hpage.cpp \
         hsettingmanager.cpp \
+        hsettingpage.cpp \
         htile.cpp \
         hwindow.cpp \
         main.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     hlaunchermanager.h \
     hpage.h \
     hsettingmanager.h \
+    hsettingpage.h \
     htile.h \
     hwindow.h \
     maingamepage.h \

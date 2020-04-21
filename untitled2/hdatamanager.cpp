@@ -43,7 +43,7 @@ void HDataManager::doDelete(HDataManager *manager)
     }
 }
 
-void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus, const uint64_t &nTileNumber)
+void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
 {
     switch(eTouchStatus)
     {
@@ -59,10 +59,7 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus, const u
         // [3] Check & Add Max Combo
         setMaxCombo(getCombo());
 
-        // [4] Set Tile Number
-        setTileNumber(nTileNumber);
-
-        // [5] Play Sound
+        // [4] Play Sound
         HSettingManager::instance()->setPlaySoundStatus(HEnum::E_SOUND_TILE_SUCCESS, true);
 
         emit updateUI(HEnum::E_UPDATE_UI_SUCCESS_TOUCH);

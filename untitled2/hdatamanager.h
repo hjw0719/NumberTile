@@ -48,7 +48,7 @@ public : // data process
      * @param eTouchStatus :
      * @param nTileNumber
      */
-    void touchProcess(const HEnum::ETouchStatus &eTouchStatus, const uint64_t &nTileNumber = 0);
+    void touchProcess(const HEnum::ETouchStatus &eTouchStatus);
 
     void dataInitialize();
 

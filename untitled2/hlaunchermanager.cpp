@@ -8,6 +8,7 @@
 #include "titlepage.h"
 #include "scoreboardpage.h"
 #include "hsettingmanager.h"
+#include "hsettingpage.h"
 
 HLauncherManager* HLauncherManager::m_singleTonManager = NULL;
 
@@ -137,6 +138,10 @@ void HLauncherManager::createPage(const HEnum::EPageType ePageType)
     case HEnum::E_PAGE_SCORE_BOARD:
     {
         pNewPage = new ScoreBoardPage;
+    }   break;
+    case HEnum::E_PAGE_SETTING:
+    {
+        pNewPage = new HSettingPage;
     }   break;
     default : return;
     }
