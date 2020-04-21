@@ -57,6 +57,11 @@ HLauncherManager *HLauncherManager::instance()
     return m_singleTonManager;
 }
 
+void HLauncherManager::closePage()
+{
+
+}
+
 bool HLauncherManager::pageTransition(const HEnum::EPageType ePageType, const HEnum::ETransitionType &eTransitionType)
 {
     QString newPageObjectName = enumToString(ePageType);
