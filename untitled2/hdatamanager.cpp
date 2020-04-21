@@ -9,6 +9,8 @@
 #include <QJsonObject>
 #include <QTimer>
 
+#define DEMO_VERSION
+
 QSharedPointer<HDataManager> obj = NULL;
 
 HDataManager::HDataManager(QObject *parent) :
@@ -17,7 +19,8 @@ HDataManager::HDataManager(QObject *parent) :
     m_nFeverGauge(0),
     m_nCombo(0),
     m_nMaxCombo(0),
-    m_nScore(0)
+    m_nScore(0),
+    m_nTileNumber(0)
 {
     initialize();
 }
@@ -40,7 +43,7 @@ void HDataManager::doDelete(HDataManager *manager)
     }
 }
 
-void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
+void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus, const uint64_t &nTileNumber)
 {
     switch(eTouchStatus)
     {
@@ -53,10 +56,13 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
         // [2] Add Combo.
         setCombo(getCombo() + 1);
 
-        // [3] Check & Add Max Combo;
+        // [3] Check & Add Max Combo
         setMaxCombo(getCombo());
 
-        // [3] Check & Add Max Combo;
+        // [4] Set Tile Number
+        setTileNumber(nTileNumber);
+
+        // [5] Play Sound
         HSettingManager::instance()->setPlaySoundStatus(HEnum::E_SOUND_TILE_SUCCESS, true);
 
         emit updateUI(HEnum::E_UPDATE_UI_SUCCESS_TOUCH);
@@ -166,6 +172,16 @@ void HDataManager::calculateRank(QSharedPointer<HGamer> pGamer)
     }
 }
 
+uint64_t HDataManager::getTileNumber() const
+{
+    return m_nTileNumber;
+}
+
+void HDataManager::setTileNumber(const uint64_t &nTileNumber)
+{
+    m_nTileNumber = nTileNumber;
+}
+
 QJsonArray HDataManager::convertRankListToJsonArray()
 {
     QJsonArray array;
@@ -189,7 +205,7 @@ bool HDataManager::highScoreThan(const QSharedPointer<HGamer> &pGamer1, const QS
 
     if (pGamer1Score == pGamer2Score)
     {
-        return pGamer1->getMaxCombo() > pGamer2->getMaxCombo();
+        return pGamer1->getMaxTileNumber() > pGamer2->getMaxTileNumber();
     }
     else
     {
@@ -218,9 +234,11 @@ void HDataManager::dataInitialize()
 
 void HDataManager::saveData()
 {
+#ifdef DEMO_VERSION
     QSharedPointer<HGamer> pGamer = QSharedPointer<HGamer>(new HGamer, &HGamer::doDeleteLater);
     pGamer->setMaxCombo(getMaxCombo());
     pGamer->setMaxScore(getScore());
+    pGamer->setMaxTileNumber(getTileNumber());
 
     m_tRankList.append(pGamer);
 
@@ -231,4 +249,9 @@ void HDataManager::saveData()
         QSharedPointer<HGamer> tGamer = m_tRankList.at(i);
         tGamer->setRank(i+1);
     }
+#else
+    m_pCurrentGamer->setMaxCombo(getMaxCombo());
+    m_pCurrentGamer->setMaxScore(getScore());
+
+#endif
 }

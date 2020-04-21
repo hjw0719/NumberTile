@@ -21,7 +21,11 @@ MainGamePage::MainGamePage() :
 
 MainGamePage::~MainGamePage()
 {
-
+    if (m_pLifeTimer)
+    {
+        delete m_pLifeTimer;
+        m_pLifeTimer = NULL;
+    }
 }
 
 void MainGamePage::initialize()
@@ -85,8 +89,8 @@ void MainGamePage::gameOver()
 
     getComponent(OBJNAME_GAMEOVERPOPUP)->setVisible(true);
 
-    QEvent releaseEvent = QEvent(QEvent::MouseButtonRelease);
-    qApp->sendEvent(window(), &releaseEvent);
+    QEvent *releaseEvent = new QEvent(QEvent::MouseButtonRelease);
+    QCoreApplication::postEvent(window(), releaseEvent);
 }
 
 void MainGamePage::gameStart()
@@ -97,8 +101,11 @@ void MainGamePage::gameStart()
 
 void MainGamePage::timerStart(const int &nTime)
 {
-    m_pLifeTimer->setSingleShot(true);
-    m_pLifeTimer->start(nTime);
+    if (m_pLifeTimer)
+    {
+        m_pLifeTimer->setSingleShot(true);
+        m_pLifeTimer->start(nTime);
+    }
 }
 
 void MainGamePage::startReadyCount()
@@ -122,10 +129,13 @@ void MainGamePage::onLifeTimeEnd()
 
 void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 {
-    qDebug() << Q_FUNC_INFO <<m_pLifeTimer->isActive();
-    if (!m_pLifeTimer->isActive())
+    if (m_pLifeTimer)
     {
-        return;
+        qDebug() << Q_FUNC_INFO <<m_pLifeTimer->isActive();
+        if (!m_pLifeTimer->isActive())
+        {
+            return;
+        }
     }
 
     switch(eUpdateUIType)
@@ -164,6 +174,11 @@ void MainGamePage::onUpdateUI(HEnum::EUpdateUIType eUpdateUIType)
 void MainGamePage::reduceLifeTime()
 {
     // 잘못된 선택에 의한 life gage 감소.
+    if (!m_pLifeTimer)
+    {
+        return;
+    }
+
     int nTempRemainTime = m_pLifeTimer->remainingTime() - LIFE_REDUCE_INTERVAL;
     qDebug() << Q_FUNC_INFO << m_pLifeTimer->remainingTime() << " " << LIFE_REDUCE_INTERVAL;
     if (LIFE_REDUCE_INTERVAL > nTempRemainTime)

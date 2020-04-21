@@ -75,7 +75,7 @@ Page {
                         width : parent.width / 4
                         anchors.left: id_score.right
                         anchors.verticalCenter: parent.verticalCenter
-                        text : "Combo"
+                        text : "Tile"
                         font.pixelSize: 15
                         horizontalAlignment: Text.AlignHCenter
                     }
@@ -134,7 +134,7 @@ Page {
                 width : parent.width / 4
                 anchors.left: id_score.right
                 anchors.verticalCenter: parent.verticalCenter
-                text : modelData.combo
+                text : modelData.tile
                 font.pixelSize: 15
                 horizontalAlignment: Text.AlignHCenter
             }

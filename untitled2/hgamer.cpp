@@ -7,7 +7,8 @@ HGamer::HGamer(QObject *parent) :
     m_strName(),
     m_nMaxCombo(0),
     m_nMaxScore(0),
-    m_nRank(0)
+    m_nRank(0),
+    m_nMaxTileNumber(0)
 {
     m_strName = QString("aaa");
 }
@@ -83,8 +84,18 @@ QJsonObject HGamer::toJson()
     QJsonObject tempJson;
     tempJson["name"] = getName();
     tempJson["score"] = QString::number(getMaxScore());
-    tempJson["combo"] = getMaxCombo();
+    tempJson["tile"] = QString::number(getMaxTileNumber());
     tempJson["rank"] = getRank();
 
     return tempJson;
+}
+
+uint64_t HGamer::getMaxTileNumber() const
+{
+    return m_nMaxTileNumber;
+}
+
+void HGamer::setMaxTileNumber(const uint64_t &nMaxTileNumber)
+{
+    m_nMaxTileNumber = nMaxTileNumber;
 }

@@ -61,7 +61,7 @@ void HTile::setTileStatus(const QVariant &vState)
 
 void HTile::onSuccessTouched()
 {
-    HDataManager::instance()->touchProcess(HEnum::E_TOUCH_STATUS_SUCCESS);
+    HDataManager::instance()->touchProcess(HEnum::E_TOUCH_STATUS_SUCCESS, getNumber());
 }
 
 void HTile::onFailTouched()

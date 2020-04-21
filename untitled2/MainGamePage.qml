@@ -84,6 +84,8 @@ Page{
                     {
                         if (number === nFirstNumber)
                         {
+                            onSuccessTouched()
+
                             // [1] Change Last, First Number
                             nLastNumber = nLastNumber + 1;
 
@@ -111,7 +113,6 @@ Page{
                             id_tileList.itemAt(occupyIndex).number = nLastNumber
                             id_tileList.itemAt(occupyIndex).status = HEnum.E_TILE_STATUS_OCCUPY
 
-                            onSuccessTouched()
                         }
                         else
                         {

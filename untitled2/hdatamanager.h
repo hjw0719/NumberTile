@@ -20,7 +20,7 @@ public:
     static HDataManager *instance();
     static void doDelete(HDataManager *manager);
 
-    void touchProcess(const HEnum::ETouchStatus &eTouchStatus);
+public : // getter setter
 
     void setFever(const bool &bFever);
     bool getFever();
@@ -37,6 +37,19 @@ public:
     uint8_t getFeverGauge() const;
     void setFeverGauge(const uint8_t &nFeverGauge);
 
+    uint64_t getTileNumber() const;
+    void setTileNumber(const uint64_t &nTileNumber);
+
+public : // data process
+
+    /**
+     * @brief touchProcess
+     *        This function react when tile touched.
+     * @param eTouchStatus :
+     * @param nTileNumber
+     */
+    void touchProcess(const HEnum::ETouchStatus &eTouchStatus, const uint64_t &nTileNumber = 0);
+
     void dataInitialize();
 
     void saveData();
@@ -44,6 +57,7 @@ public:
     QJsonArray convertRankListToJsonArray();
 
     static bool highScoreThan(const QSharedPointer<HGamer> &pGamer1, const QSharedPointer<HGamer> &pGamer2);
+
 protected:
     void initialize();
     void calculateRank(QSharedPointer<HGamer> pGamer);
@@ -59,6 +73,7 @@ private :
     uint16_t m_nCombo;
     uint16_t m_nMaxCombo;
     uint64_t m_nScore;
+    uint64_t m_nTileNumber;
     QList<QSharedPointer<HGamer>> m_tRankList;
 };
 
