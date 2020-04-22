@@ -68,6 +68,9 @@ Page {
                 maximumValue: 100
                 minimumValue: 1
                 stepSize: 1
+
+                updateValueWhileDragging : false
+
                 signal soundValueChanged(int value)
                 onValueChanged: {
                     soundValueChanged(value)
@@ -116,6 +119,8 @@ Page {
                 maximumValue: 100
                 minimumValue: 1
                 stepSize: 1
+
+                updateValueWhileDragging : false
 
                 signal soundValueChanged(int value)
                 onValueChanged: {
