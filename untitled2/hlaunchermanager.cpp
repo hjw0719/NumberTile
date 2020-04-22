@@ -94,29 +94,27 @@ bool HLauncherManager::pageTransition(const HEnum::EPageType ePageType, const HE
 
     case HEnum::E_TRANSITION_SHOW_RETURN:
     {
-        QList<HPage *> deletePageList;
-        for (int i = m_tPageList.size() -1; i >= 0; i--)
+        while (m_tPageList.size())
         {
-            auto pPage = m_tPageList.at(i);
-            QString strTempPageObjectName = pPage->objectName();
+            auto pPage = m_tPageList.takeLast();
+            if (!pPage)
+            {
+                return false;
+            }
 
+            QString strTempPageObjectName = pPage->objectName();
             if (!strTempPageObjectName.compare(newPageObjectName))
             {
                 pPage->setParentItem(m_pWindow->contentItem());
                 pPage->setVisible(true);
                 pPage->setEnabled(true);
+                m_tPageList.append(pPage);
+                return true;
             }
             else
             {
-//                deletePage(pPage);
-//                delete pPage;
-                deletePageList.append(pPage);
+                deletePage(pPage);
             }
-        }
-
-        foreach (auto pDeletePage, deletePageList)
-        {
-            delete pDeletePage;
         }
     }   break;
     default : return false;
