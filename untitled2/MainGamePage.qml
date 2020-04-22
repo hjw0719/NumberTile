@@ -32,8 +32,8 @@ Page{
     }
 
     HButton{
-        id: id_resumedButton
-        objectName: "id_resumedButton"
+        id: id_pauseButton
+        objectName: "id_pauseButton"
         width: parent.width / 15
         height: parent.width / 15
         anchors.right: parent.right
@@ -289,6 +289,33 @@ Page{
                     parent.readyCountNumber--
                 }
             }
+        }
+    }
+
+    PopupLayer {
+        id: id_pausePopup
+        objectName: "id_pausePopup"
+        signal clickedResumed()
+        signal clickedSettingButton()
+        visible: false
+
+        HButton{
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width /3
+            height: parent.height /6
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width/12
+            strButtonText: "Resume"
+            onClicked: parent.clickedResumed()
+        }
+
+        HSettingButton{
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width /3
+            height: parent.height /6
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width/12
+            onClicked: parent.clickedSettingButton()
         }
     }
 }

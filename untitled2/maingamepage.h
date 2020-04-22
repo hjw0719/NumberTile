@@ -36,7 +36,9 @@ protected slots :
     void onClickedRestartButton();
     void onClickedScoreBoardButton();
     void onReadyCountOver();
-    void onResumedButton();
+    void onPauseButton();
+    void onClickedResumeButton();
+    void onClickedSettingButton();
 
 private:
     int m_nAddLifeTimeInterval;

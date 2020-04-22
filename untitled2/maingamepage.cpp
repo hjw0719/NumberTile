@@ -10,7 +10,8 @@
 #define OBJNAME_SCORE "id_score"
 #define OBJNAME_GAMEOVERPOPUP "id_gamaOverPopup"
 #define OBJNAME_READYCOUNT "id_readyCount"
-#define OBJNAME_RESUMEBUTTON "id_resumedButton"
+#define OBJNAME_PAUSEPOPUP "id_pausePopup"
+#define OBJNAME_PAUSEBUTTON "id_pauseButton"
 
 MainGamePage::MainGamePage() :
     HPage(QUrl("qrc:/MainGamePage.qml")),
@@ -35,7 +36,9 @@ void MainGamePage::initialize()
     connect(getComponent(OBJNAME_GAMEOVERPOPUP),    SIGNAL(clickedScoreBoardButton()),      this,   SLOT(onClickedScoreBoardButton()));
     connect(getComponent(OBJNAME_LIFEGAUGE),        SIGNAL(timeOver()),                     this,   SLOT(onLifeTimeEnd()));
     connect(getComponent(OBJNAME_READYCOUNT),       SIGNAL(countOver()),                    this,   SLOT(onReadyCountOver()));
-    connect(getComponent(OBJNAME_RESUMEBUTTON),     SIGNAL(clicked()),                      this,   SLOT(onResumedButton()));
+    connect(getComponent(OBJNAME_PAUSEBUTTON),      SIGNAL(clicked()),                      this,   SLOT(onPauseButton()));
+    connect(getComponent(OBJNAME_PAUSEPOPUP),       SIGNAL(clickedResumed()),               this,   SLOT(onClickedResumeButton()));
+    connect(getComponent(OBJNAME_PAUSEPOPUP),       SIGNAL(clickedSettingButton()),         this,   SLOT(onClickedSettingButton()));
     startReadyCount();
 }
 
@@ -247,16 +250,24 @@ void MainGamePage::onReadyCountOver()
     timerStart();
 }
 
-void MainGamePage::onResumedButton()
+void MainGamePage::onPauseButton()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (getisTimerRunning())
-    {
-        timerPaused();
-    }
-    else
-    {
-        startReadyCount(false);
-    }
+    timerPaused();
+
+    getComponent(OBJNAME_PAUSEPOPUP)->setVisible(true);
+}
+
+void MainGamePage::onClickedResumeButton()
+{
+    qDebug() << Q_FUNC_INFO;
+    getComponent(OBJNAME_PAUSEPOPUP)->setVisible(false);
+    startReadyCount(false);
+}
+
+void MainGamePage::onClickedSettingButton()
+{
+    qDebug() << Q_FUNC_INFO;
+    HLauncherManager::instance()->pageTransition(HEnum::E_PAGE_SETTING);
 }
