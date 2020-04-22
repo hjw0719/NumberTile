@@ -31,7 +31,7 @@ Page{
         }
     }
 
-    Button{
+    HButton{
         id: id_resumedButton
         objectName: "id_resumedButton"
         width: parent.width / 15
@@ -52,7 +52,7 @@ Page{
         text: "0"
     }
 
-    Gauge{
+    HGauge{
         id: id_lifeGauge
         objectName: "id_lifeGauge"
         anchors.leftMargin: 20
@@ -218,7 +218,7 @@ Page{
                 font.pixelSize: 25
             }
 
-            Button {
+            HButton {
                 id: id_restartButton
                 width: parent.width /3
                 height: parent.height /3
@@ -233,7 +233,7 @@ Page{
                 }
             }
 
-            Button {
+            HButton {
                 id: id_moveScoreBoard
                 width: parent.width /3
                 height: parent.height /3

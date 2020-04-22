@@ -141,7 +141,7 @@ Page {
         }
     }
 
-    Button {
+    HButton {
         id: id_restartButton
         width: parent.width /3
         height: parent.height / 8
@@ -155,7 +155,7 @@ Page {
         }
     }
 
-    Button {
+    HButton {
         id: id_titleButton
         width: parent.width /3
         height: parent.height /8

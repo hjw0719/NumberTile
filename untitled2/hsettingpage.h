@@ -16,6 +16,8 @@ protected slots :
     void onBGMSoundValueChanged(int nValue);
     void onEffectSoundValueChanged(int nValue);
     void onBackButtonClicked();
+    void onBGMMuteChanged(bool bMute);
+    void onEffectMuteChanged(bool bMute);
 };
 
 #endif // HSETTINGPAGE_H
