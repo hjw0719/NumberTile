@@ -4,6 +4,19 @@
 
 #define OBJNAME_MOUSEAREA "id_mouseArea"
 #define OBJNAME_SETTINGBUTTON "id_settingButton"
+#define OBJNAME_VERSION "id_versionText"
+
+#define INNER_VERSION qApp->applicationVersion()
+#define OUTER_VERSION outerAppVersion(INNER_VERSION)
+
+inline QString outerAppVersion(QString strAppVersion)
+{
+    int nLastIndex = strAppVersion.lastIndexOf(".");
+    int nSize = strAppVersion.size() - nLastIndex;
+    strAppVersion.remove(nLastIndex, nSize);
+
+    return strAppVersion;
+}
 
 TitlePage::TitlePage() :
     HPage(QUrl("qrc:/TitlePage.qml"))
@@ -24,6 +37,9 @@ void TitlePage::initialize()
     qDebug() <<Q_FUNC_INFO << bSuccess;
 
     connect(getComponent(OBJNAME_SETTINGBUTTON), SIGNAL(clickedSettingButton()), this, SLOT(onClickedSettingButton()));
+
+
+    getComponent(OBJNAME_VERSION)->setProperty("text", OUTER_VERSION);
 }
 
 void TitlePage::onClickedPage()

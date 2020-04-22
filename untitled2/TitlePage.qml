@@ -49,6 +49,19 @@ Page {
         }
     }
 
+    Text{
+        id : id_versionText
+        objectName: "id_versionText"
+        width : parent.width
+        height : 30
 
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+
+        horizontalAlignment: Text.AlignRight
+        verticalAlignment: Text.AlignVCenter
+
+        font.pixelSize: 15
+    }
 
 }

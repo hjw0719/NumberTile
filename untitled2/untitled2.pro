@@ -46,6 +46,8 @@ equals (QMAKE_HOST.os, "Windows") {
         DEFINES += OS_DESKTOP
 }
 
+VERSION = 0.1.0.30
+
 HEADERS += \
     HDefine.h \
     HEnum.h \
