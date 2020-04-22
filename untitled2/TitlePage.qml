@@ -12,7 +12,7 @@ Page {
         signal clickedPage()
     }
 
-    SettingButton{
+    HSettingButton{
         width: 60
         height: 60
 

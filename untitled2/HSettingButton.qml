@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Button{
+HButton{
     id :id_settingButton
     objectName: "id_settingButton"
 

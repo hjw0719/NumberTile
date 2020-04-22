@@ -4,12 +4,13 @@
         <file>MainGamePage.qml</file>
         <file>Tile.qml</file>
         <file>PopupLayer.qml</file>
-        <file>Gauge.qml</file>
+        <file>HGauge.qml</file>
         <file>TitlePage.qml</file>
         <file>Page.qml</file>
         <file>ScoreBoardPage.qml</file>
-        <file>Button.qml</file>
+        <file>HButton.qml</file>
         <file>SettingPage.qml</file>
-        <file>SettingButton.qml</file>
+        <file>HSettingButton.qml</file>
+        <file>HMuteButton.qml</file>
     </qresource>
 </RCC>

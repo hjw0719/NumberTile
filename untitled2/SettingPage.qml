@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 
 Page {
 
-    Button{
+    HButton{
         id : id_backButton
         objectName: "id_backButton"
 
@@ -12,6 +12,8 @@ Page {
         height : 60
         anchors.right: parent.right
 
+        strButtonText: "<"
+
         signal backButtonClicked()
 
         onClicked: {
@@ -19,82 +21,119 @@ Page {
         }
     }
 
-    Rectangle{
-        width : parent.width/2
-        height : parent.height/2
+    Item
+    {
+        width : parent.width
+        height : parent.height - id_backButton.height - 5
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
 
-        anchors.centerIn: parent
-        color : "dark red"
+        Rectangle{
+            width : parent.width/4 * 3
+            height : parent.height/6 * 5
 
-        Text {
-            id: id_bgmText
-            text: qsTr("BGM")
+            anchors.centerIn: parent
+            color : "dark red"
 
-            width : parent.width/3
-            height : 50
+            Text {
+                id: id_bgmText
+                text: qsTr("BGM")
 
-            anchors.top: parent.top
-            anchors.topMargin: 10
-            anchors.left: parent.left
-            anchors.leftMargin: 10
+                width : parent.width/3
+                height : 50
 
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-        }
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 10
 
-        Slider{
-            id: id_bgmSlider
-            objectName: "id_bgmSlider"
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignLeft
 
-            anchors.top: id_bgmText.bottom
-
-            width : parent.width - 10
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            maximumValue: 100
-            minimumValue: 1
-            stepSize: 1
-            signal soundValueChanged(int value)
-            onValueChanged: {
-                soundValueChanged(value)
+                font.pixelSize: 30
             }
-        }
 
-        Text {
-            id: id_effectText
-            text: qsTr("Effect")
+            Slider{
+                id: id_bgmSlider
+                objectName: "id_bgmSlider"
 
-            width : parent.width/3
-            height : 50
+                anchors.top: id_bgmText.bottom
 
-            anchors.top: id_bgmText.bottom
-            anchors.topMargin: 10
-            anchors.left: parent.left
-            anchors.leftMargin: 10
+                width : parent.width - 45
+                anchors.left: parent.left
+                anchors.leftMargin: 5
 
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-        }
+                enabled: !id_BGMMuteButton.bMute
 
-        Slider{
-            id: id_effectSlider
-            objectName: "id_effectSlider"
+                maximumValue: 100
+                minimumValue: 1
+                stepSize: 1
+                signal soundValueChanged(int value)
+                onValueChanged: {
+                    soundValueChanged(value)
+                }
+            }
 
-            anchors.top: id_effectText.bottom
+            HMuteButton{
+                id : id_BGMMuteButton
+                objectName: "id_BGMMuteButton"
+                anchors.right: parent.right
+                anchors.rightMargin: 5
 
-            width : parent.width - 10
-            anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: id_bgmSlider.verticalCenter
+            }
 
-            maximumValue: 100
-            minimumValue: 1
-            stepSize: 1
+            Text {
+                id: id_effectText
+                text: qsTr("Effect")
 
-            signal soundValueChanged(int value)
-            onValueChanged: {
-                soundValueChanged(value)
+                width : parent.width/3
+                height : 50
+
+                anchors.top: id_bgmText.bottom
+                anchors.topMargin: 40
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignLeft
+
+                font.pixelSize: 30
+            }
+
+            Slider{
+                id: id_effectSlider
+                objectName: "id_effectSlider"
+
+                anchors.top: id_effectText.bottom
+
+                width : parent.width - 45
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+
+                enabled: !id_effectMuteButton.bMute
+
+                maximumValue: 100
+                minimumValue: 1
+                stepSize: 1
+
+                signal soundValueChanged(int value)
+                onValueChanged: {
+                    soundValueChanged(value)
+                }
+            }
+
+            HMuteButton{
+                id : id_effectMuteButton
+                objectName: "id_effectMuteButton"
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+
+                anchors.verticalCenter: id_effectSlider.verticalCenter
             }
         }
     }
+
 
 
 }
