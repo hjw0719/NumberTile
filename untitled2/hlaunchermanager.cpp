@@ -192,7 +192,6 @@ void HLauncherManager::pageClose()
     deletePage(currentPage);
 
     auto beforePage = m_tPageList.last();
-    beforePage->setParentItem(m_pWindow->contentItem());
     beforePage->setVisible(true);
     beforePage->setEnabled(true);
 }

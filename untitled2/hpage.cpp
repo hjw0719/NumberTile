@@ -42,7 +42,6 @@ QQuickItem* HPage::getComponent(const QString &strObjectName)
 
 void HPage::pageStop()
 {
-    this->setParentItem(nullptr);
     this->setParent(nullptr);
     this->setVisible(false);
 }
