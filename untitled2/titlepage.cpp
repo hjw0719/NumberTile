@@ -11,9 +11,13 @@
 
 inline QString outerAppVersion(QString strAppVersion)
 {
+    qDebug() << "Version : " << strAppVersion;
+
     int nLastIndex = strAppVersion.lastIndexOf(".");
     int nSize = strAppVersion.size() - nLastIndex;
     strAppVersion.remove(nLastIndex, nSize);
+
+    qDebug() << "Convert Version : " << strAppVersion;
 
     return strAppVersion;
 }
@@ -39,7 +43,7 @@ void TitlePage::initialize()
     connect(getComponent(OBJNAME_SETTINGBUTTON), SIGNAL(clickedSettingButton()), this, SLOT(onClickedSettingButton()));
 
 
-    getComponent(OBJNAME_VERSION)->setProperty("text", OUTER_VERSION);
+    getComponent(OBJNAME_VERSION)->setProperty("text", INNER_VERSION);
 }
 
 void TitlePage::onClickedPage()

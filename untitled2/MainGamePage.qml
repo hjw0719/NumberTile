@@ -38,7 +38,7 @@ Page{
         height: parent.width / 15
         anchors.right: parent.right
         anchors.rightMargin: 10
-        strButtonText: ""
+        strButtonText: "||"
         buttonRaius: 0
     }
 
