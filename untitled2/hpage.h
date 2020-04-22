@@ -2,7 +2,6 @@
 #define PAGE_H
 
 #include <QQuickItem>
-#include <qquickwindow.h>
 
 class HPage : public QQuickItem
 {
@@ -23,6 +22,7 @@ protected:
 
 private:
     QUrl m_urlSource;
+
 };
 
 #endif // PAGE_H

@@ -51,7 +51,6 @@ void HSettingPage::onEffectSoundValueChanged(int nValue)
 
 void HSettingPage::onBackButtonClicked()
 {
-//    HLauncherManager::instance()->pageTransition(HEnum::E_PAGE_TITLE_PAGE, HEnum::E_TRANSITION_SHOW_RETURN);
     HLauncherManager::instance()->pageClose();
 }
 

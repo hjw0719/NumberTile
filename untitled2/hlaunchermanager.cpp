@@ -9,6 +9,7 @@
 #include "scoreboardpage.h"
 #include "hsettingmanager.h"
 #include "hsettingpage.h"
+#include "hwindow.h"
 
 HLauncherManager* HLauncherManager::m_singleTonManager = NULL;
 
@@ -29,7 +30,7 @@ void HLauncherManager::initialize()
 {
     m_engine = new QQmlApplicationEngine;
 
-    m_pWindow = new QQuickWindow;
+    m_pWindow = new HWindow;
     registerItem();
     HSettingManager::instance()->initialze();
 
@@ -181,8 +182,10 @@ HPage *HLauncherManager::getCurrentPage()
 
 void HLauncherManager::pageClose()
 {
+    qDebug() << Q_FUNC_INFO << "Page size : " << m_tPageList.size();
     if (2 > m_tPageList.size())
     {
+        qApp->quit();
         return;
     }
 

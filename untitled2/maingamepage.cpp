@@ -4,6 +4,7 @@
 #include "hdatamanager.h"
 #include "HDefine.h"
 #include <QMetaObject>
+#include "hwindow.h"
 
 #define OBJNAME_TILELIST "id_tileList"
 #define OBJNAME_LIFEGAUGE "id_lifeGauge"

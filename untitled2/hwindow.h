@@ -8,11 +8,11 @@
 class HWindow : public QQuickWindow
 {
 public:
-    HWindow();
+    explicit HWindow(QWindow *parent = nullptr);
 
     // QObject interface
     public:
-        bool event(QEvent *event);
+        bool event(QEvent *event) override;
 };
 
 #endif // HWINDOW_H
