@@ -8,9 +8,12 @@ Page {
         objectName: "id_backButton"
 
         anchors.top: parent.top
+        anchors.topMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+
         width : 60
         height : 60
-        anchors.right: parent.right
 
         strButtonText: "<"
 
@@ -32,6 +35,8 @@ Page {
             width : parent.width/4 * 3
             height : parent.height/6 * 5
 
+            readonly property real margin: width / 10
+
             anchors.centerIn: parent
             color : "dark red"
 
@@ -43,9 +48,9 @@ Page {
                 height : 50
 
                 anchors.top: parent.top
-                anchors.topMargin: 10
+                anchors.topMargin: parent.margin
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: parent.margin
 
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignLeft
@@ -58,10 +63,9 @@ Page {
                 objectName: "id_bgmSlider"
 
                 anchors.top: id_bgmText.bottom
-
-                width : parent.width - 45
                 anchors.left: parent.left
-                anchors.leftMargin: 5
+
+                width : parent.margin * 7
 
                 enabled: !id_BGMMuteButton.bMute
 
@@ -80,8 +84,12 @@ Page {
             HMuteButton{
                 id : id_BGMMuteButton
                 objectName: "id_BGMMuteButton"
+
+                width : parent.margin * 2
+                height : width
+
                 anchors.right: parent.right
-                anchors.rightMargin: 5
+                anchors.rightMargin: parent.margin
 
                 anchors.verticalCenter: id_bgmSlider.verticalCenter
             }
@@ -93,10 +101,10 @@ Page {
                 width : parent.width/3
                 height : 50
 
-                anchors.top: id_bgmText.bottom
-                anchors.topMargin: 40
+                anchors.top: id_BGMMuteButton.bottom
+                anchors.topMargin: parent.margin
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: parent.margin
 
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignLeft
@@ -109,10 +117,9 @@ Page {
                 objectName: "id_effectSlider"
 
                 anchors.top: id_effectText.bottom
-
-                width : parent.width - 45
                 anchors.left: parent.left
-                anchors.leftMargin: 5
+
+                width : parent.margin * 7
 
                 enabled: !id_effectMuteButton.bMute
 
@@ -131,8 +138,11 @@ Page {
             HMuteButton{
                 id : id_effectMuteButton
                 objectName: "id_effectMuteButton"
+
+                width : parent.margin*2
+                height : width
                 anchors.right: parent.right
-                anchors.rightMargin: 5
+                anchors.rightMargin: parent.margin
 
                 anchors.verticalCenter: id_effectSlider.verticalCenter
             }
