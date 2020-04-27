@@ -15,6 +15,9 @@ public:
 
     static HSettingManager *instance();
     void initialze();
+    void initializeSound();
+    void initializeFont();
+
     static void doDelete(HSettingManager *manager);
     void setVolume(const HEnum::ESoundType eSoundType, const qreal fVolume);
     void setMute(const HEnum::ESoundType eSoundType, const bool bMute);

@@ -42,10 +42,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-equals (QMAKE_HOST.os, "Windows") {
-        DEFINES += OS_DESKTOP
-}
-
 VERSION = 0.1.0.30
 
 HEADERS += \
@@ -62,3 +58,36 @@ HEADERS += \
     maingamepage.h \
     scoreboardpage.h \
     titlepage.h
+
+
+COM_MKDIR = ""
+DEST_FONT = ""
+
+# 빌드하는 환경이 윈도우인 경우.
+equals (QMAKE_HOST.os, "Windows") {
+
+        # 폴더 생성 명령어를 윈도우 용으로 설정
+        COM_MKDIR = MKDIR
+
+        # 빌드를 Debug or Release로 할 때 실행 파일 위치에 따라 font 복사 경로 다르게 지정.
+        CONFIG(debug, debug|release) {
+                DEST_FONT = $$shell_path($$OUT_PWD/debug/resource/font)
+        } else {
+                DEST_FONT = $$shell_path($$OUT_PWD/release/resource/font)
+        }
+}
+
+# 폰트 폴더가 존재하지 않는 경우 폴더 생성
+!exists($$shell_path($$DEST_FONT)) {
+        AAA = $$system($$COM_MKDIR $$DEST_FONT)
+}
+
+# 원본 소스에서 폰트 파일을 빌드한 곳으로 복사
+equals (QMAKE_HOST.os, "Windows") {
+    copyFontFolder.target = copyFontFolder
+    copyFontFolder.commands = $(COPY_DIR) $$shell_path($$PWD/resource/font) $$DEST_FONT
+    QMAKE_EXTRA_TARGETS += copyFontFolder
+    PRE_TARGETDEPS += copyFontFolder
+}
+
+

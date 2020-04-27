@@ -2,6 +2,12 @@
 #include <QSound>
 
 #include <HDefine.h>
+#include <QGuiApplication>
+#include <QDebug>
+#include <QFile>
+#include <QFont>
+#include <QFontDatabase>
+
 QSharedPointer<HSettingManager> settingObj = NULL;
 
 HSettingManager::HSettingManager(QObject *parent) :
@@ -26,6 +32,14 @@ HSettingManager *HSettingManager::instance()
 }
 
 void HSettingManager::initialze()
+{
+    initializeSound();
+    initializeFont();
+
+
+}
+
+void HSettingManager::initializeSound()
 {
     for (int i = 0; i < HEnum::E_SOUND_MAX; i++)
     {
@@ -66,6 +80,44 @@ void HSettingManager::initialze()
         default: continue;
         }
     }
+}
+
+void HSettingManager::initializeFont()
+{
+    QString appFolderPath = QGuiApplication::applicationDirPath();
+    qDebug() << "App Folder : " << appFolderPath;
+
+
+    QStringList fontFiles;
+    QStringList normalFontFamily;
+    QStringList boldFontFamily;
+
+    //================================================================================================================
+    normalFontFamily << "NanumGothicCoding";
+    boldFontFamily << "NanumGothicCoding-Bold";
+
+    fontFiles << QString("%1%2%3").arg(appFolderPath).arg(FONT_PATH).arg("NanumGothicCoding.ttf");
+    fontFiles << QString("%1%2%3").arg(appFolderPath).arg(FONT_PATH).arg("NanumGothicCoding-Bold.ttf");
+
+    //================================================================================================================
+
+    foreach (const QString &strFontPath, fontFiles)
+    {
+        qDebug() << "Font files : " << strFontPath;
+
+        QFile fontFile(strFontPath);
+        if(false == fontFile.open(QIODevice::ReadOnly))
+        {
+            continue;
+        }
+
+        QFontDatabase::addApplicationFontFromData(fontFile.readAll());
+        fontFile.close();
+    }
+
+    QFont font("NanumGothicCoding");
+
+    QGuiApplication::setFont(font);
 }
 
 void HSettingManager::doDelete(HSettingManager *manager)

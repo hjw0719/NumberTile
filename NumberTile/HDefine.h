@@ -30,4 +30,14 @@
 #define SOUND_VOUME_DEFAULT 0.5
 #define SOUND_URL_TILE_TOUCH_FAIL "qrc:/sound/tile_touch_fail.WAV"
 #define SOUND_URL_TILE_TOUCH_SUCCESS "qrc:/sound/tile_touch_success.WAV"
+
+
+#ifdef Q_OS_WIN
+#define FONT_PATH "/resource/font/"
+#else
+#define FONT_PATH "/resource/font/"
+#endif
+
 #endif // HDEFINE_H
+
+
