@@ -97,7 +97,9 @@ void HSettingManager::initializeFont()
             continue;
         }
 
-        qDebug() << "Register Font result : " << QFontDatabase::addApplicationFontFromData(file.readAll());
+        int id = QFontDatabase::addApplicationFontFromData(file.readAll());
+        qDebug() << "Register Font result : " << id;
+
         file.close();
     }
 

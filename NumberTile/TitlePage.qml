@@ -1,5 +1,5 @@
 import QtQuick 2.0
-
+import "qrc:/font/fontDefine.js" as Font
 Page {
     id: id_titlePage
 
@@ -32,6 +32,8 @@ Page {
         anchors.topMargin: parent.width/2
         horizontalAlignment: Text.AlignHCenter
         lineHeight: 2
+        font.bold: true
+        font.family: Font.fontNumber
     }
 
     Text {

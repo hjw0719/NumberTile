@@ -60,11 +60,13 @@ HEADERS += \
     titlepage.h
 
 
+# 안드로이드 관련 파일 (manifest.xml 등) 생성 위치 지정.
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+
 #COM_MKDIR = ""
 #DEST_FONT = ""
 
-## 안드로이드 관련 파일 생성 위치 지정.
-#ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 ## 빌드하는 환경이 윈도우인 경우.
 #equals (QMAKE_HOST.os, "Windows") {

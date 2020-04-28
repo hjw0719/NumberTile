@@ -4,5 +4,6 @@
         <file>sound/tile_touch_success.WAV</file>
         <file>font/nanumgothiccoding.ttf</file>
         <file>font/nanumgothiccodingbold.ttf</file>
+        <file>font/fontDefine.js</file>
     </qresource>
 </RCC>
