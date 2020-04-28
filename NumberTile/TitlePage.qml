@@ -32,8 +32,6 @@ Page {
         anchors.topMargin: parent.width/2
         horizontalAlignment: Text.AlignHCenter
         lineHeight: 2
-
-        font.family: fontNormal
     }
 
     Text {

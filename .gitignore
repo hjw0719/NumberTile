@@ -4,3 +4,4 @@ Makefile
 Makefile.*
 .qmake.stash
 debug
+build*
