@@ -5,5 +5,10 @@
         <file>font/nanumgothiccoding.ttf</file>
         <file>font/nanumgothiccodingbold.ttf</file>
         <file>font/fontDefine.js</file>
+        <file>image/pause.png</file>
+        <file>image/play.png</file>
+        <file>image/star.png</file>
+        <file>font/numberFont.ttf</file>
+        <file>image/setting.png</file>
     </qresource>
 </RCC>

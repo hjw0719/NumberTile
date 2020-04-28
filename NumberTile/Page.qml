@@ -4,4 +4,5 @@ Item{
     id: id_mainGamePage
     width: Screen.width
     height : Screen.height
+
 }

@@ -13,6 +13,7 @@
 #define OBJNAME_READYCOUNT "id_readyCount"
 #define OBJNAME_PAUSEPOPUP "id_pausePopup"
 #define OBJNAME_PAUSEBUTTON "id_pauseButton"
+#define OBJNAME_COMBO "id_combo"
 
 MainGamePage::MainGamePage() :
     HPage(QUrl("qrc:/MainGamePage.qml")),
@@ -73,7 +74,7 @@ void MainGamePage::setScoreText(const uint64_t &nScore)
 
 void MainGamePage::setComboText(const uint16_t &nCombo)
 {
-    getComponent(OBJNAME_LIFEGAUGE)->setProperty("combo", nCombo);
+    getComponent(OBJNAME_COMBO)->setProperty("combo", nCombo);
 }
 
 void MainGamePage::setFeverMode(const bool &bFever)

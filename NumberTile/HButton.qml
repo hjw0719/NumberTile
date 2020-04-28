@@ -3,7 +3,10 @@ import QtQuick 2.0
 Item {
     property string strButtonText: "button"
     property int buttonRaius: 20
+    property bool visibleRectangle: true
     signal clicked()
+    scale: id_mouseArea.pressed ? 0.8 : 1
+
     MouseArea {
         id: id_mouseArea
         anchors.fill: parent
@@ -16,6 +19,8 @@ Item {
         border.color: "black"
         border.width: 1
         radius: buttonRaius
+        visible: visibleRectangle
+//        antialiasing: true
     }
 
     Text {

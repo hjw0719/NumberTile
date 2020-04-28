@@ -31,9 +31,10 @@
 #define SOUND_URL_TILE_TOUCH_FAIL "qrc:/sound/tile_touch_fail.WAV"
 #define SOUND_URL_TILE_TOUCH_SUCCESS "qrc:/sound/tile_touch_success.WAV"
 
-
+// font file path
 #define FONT_NORMAL_PATH ":/font/nanumgothiccoding.ttf"
 #define FONT_BOLD_PATH ":/font/nanumgothiccodingbold.ttf"
+#define FONT_NUMBER_PATH ":/font/numberFont.ttf"
 
 #endif // HDEFINE_H
 

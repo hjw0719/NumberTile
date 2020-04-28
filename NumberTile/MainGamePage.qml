@@ -11,6 +11,11 @@ Page{
     property int nFirstNumber : nLastNumber + 2 - (tileSizeX * tileSizeY)
     property bool bFever : false
 
+    readonly property int screenLeftMargin: 20
+    readonly property int screenRightMargin: 20
+    readonly property int screenTopMargin: 20
+    readonly property int screenBottomMargin: 20
+
     onTileSizeXChanged: {
         // 변경된 사이즈로 모델 초기화.
     }
@@ -31,15 +36,25 @@ Page{
         }
     }
 
+    BackGround{
+        anchors.fill: parent
+    }
+
     HButton{
         id: id_pauseButton
         objectName: "id_pauseButton"
-        width: parent.width / 15
-        height: parent.width / 15
+        width: parent.width / 10
+        height: parent.width / 10
         anchors.right: parent.right
-        anchors.rightMargin: 10
-        strButtonText: "||"
-        buttonRaius: 0
+        anchors.rightMargin: screenRightMargin
+        anchors.bottom: id_lifeGauge.top
+        anchors.bottomMargin: 5
+        visibleRectangle: false
+        strButtonText: ""
+        Image{
+            anchors.fill: parent
+            source: "qrc:/image/pause.png"
+        }
     }
 
     Text{
@@ -50,27 +65,80 @@ Page{
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
         text: "0"
+        color: "white"
     }
 
     HGauge{
         id: id_lifeGauge
         objectName: "id_lifeGauge"
-        anchors.leftMargin: 20
+//        width: parent.width * 0.7
+        anchors.leftMargin: screenLeftMargin
         anchors.left: parent.left
-        anchors.rightMargin: 20
+        anchors.rightMargin: screenRightMargin
         anchors.right: parent.right
         anchors.top: id_score.bottom
         anchors.topMargin: 10
-        height: parent.height/15.0
+        height: parent.height/20.0
+    }
+
+    Text {
+        id: id_combo
+        objectName: "id_combo"
+        anchors.horizontalCenter: parent.horizontalCenter
+        property var combo : 0
+        property int defaultFontSize:20
+        property int normalMaxFontSize:30
+        property int feverMaxFontSize:50
+
+        font.pointSize: defaultFontSize
+        text: combo + " COMBO!!"
+        color: "white"
+        visible: combo
+
+        height: parent.height/20.0
+        verticalAlignment: Text.AlignVCenter
+
+        anchors.top: id_lifeGauge.bottom
+        anchors.bottomMargin: 20
+        onTextChanged: {
+            if (combo)
+            {
+                font.pixelSize = 20
+                id_comboIncreaseAnimation.stop()
+                id_comboIncreaseAnimation.start()
+            }
+        }
+
+        SequentialAnimation {
+            id: id_comboIncreaseAnimation
+            PropertyAnimation{
+                target: id_combo
+                property: "font.pixelSize"
+                to: bFever ? id_combo.feverMaxFontSize : id_combo.normalMaxFontSize
+                duration: 100
+            }
+            PropertyAnimation{
+                target: id_combo
+                property: "font.pixelSize"
+                to: id_combo.defaultFontSize
+                duration: 100
+            }
+        }
+
+
     }
 
     Grid{
         id : id_grid
         rows: tileSizeY
         columns: tileSizeX
-        height: parent.height * 0.75
+        height: parent.height * 0.6
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: screenBottomMargin
+        anchors.left: parent.left
+        anchors.leftMargin: screenLeftMargin
+        anchors.right: parent.right
+        anchors.rightMargin: screenRightMargin
         spacing: 5
 
         Repeater{
@@ -79,8 +147,8 @@ Page{
             model : tileSizeX * tileSizeY
 
             delegate: Tile {
-                width: (id_mainGamePage.width - id_grid.spacing * 2)/3.0
-                height: (id_grid.height - id_grid.spacing * 2)/3.0
+                width: (id_grid.width - id_grid.spacing * (tileSizeX -1 ))/tileSizeX
+                height: (id_grid.height - id_grid.spacing * (tileSizeY - 1))/tileSizeY
 
                 number: index === (id_tileList.count - 1) ? 0 : index + 1
                 status: index === (id_tileList.count - 1) ? HEnum.E_TILE_STATUS_VACANCY : HEnum.E_TILE_STATUS_OCCUPY
@@ -124,6 +192,7 @@ Page{
                             id_tileList.itemAt(occupyIndex).status = HEnum.E_TILE_STATUS_OCCUPY
 
                             onSuccessTouched()
+                            numberSizeAnimation()
                         }
                         else
                         {
@@ -305,8 +374,13 @@ Page{
             height: parent.height /6
             anchors.left: parent.left
             anchors.leftMargin: parent.width/12
-            strButtonText: "Resume"
+            strButtonText: ""
+            visibleRectangle: false
             onClicked: parent.clickedResumed()
+
+            Image {
+                source: "qrc:/image/play.png"
+            }
         }
 
         HSettingButton{

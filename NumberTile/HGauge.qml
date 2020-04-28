@@ -1,5 +1,5 @@
-import QtQuick 2.0
-
+import QtQuick 2.12
+import QtGraphicalEffects 1.12
 Item {
     id: id_gauge
     property int maxGauge: 10000;
@@ -12,27 +12,49 @@ Item {
 
     Rectangle{
         id: id_BG
-        color: "red"
+//        color: "red"
         anchors.fill: parent
+//        gradient:
     }
 
-    Rectangle{
+
+    Item{
         id: id_gage
         anchors.left: id_BG.left
         width: currentPercent * parent.width
         height: parent.height
-        color: "blue"
+        clip: true
+        LinearGradient {
+            id: id_gradient
+            anchors.fill: parent
+            start: Qt.point(0, 0)
+            end: Qt.point(id_gauge.width, 0)
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#58d3f7" }
+                GradientStop { position: 1.0; color: "green" }
+            }
+            visible: true
+        }
+
+//        DropShadow {
+//            anchors.fill: id_gradient
+//            radius: 8.0
+//            samples: 16
+//            horizontalOffset: -3
+//            verticalOffset: 3
+//            color: "#80000000"
+//            source: id_gradient
+//        }
+
     }
 
-    Text {
-        text: score //id_animation.duration
-        anchors.left: parent.left
-    }
-
-    Text {
-        text: combo // currentPercent
-        anchors.right: parent.right
-    }
+//    Rectangle{
+//        id: id_gage
+//        anchors.left: id_BG.left
+//        width: currentPercent * parent.width
+//        height: parent.height
+//        color: "blue"
+//    }
 
     PropertyAnimation{
         id: id_animation

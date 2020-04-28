@@ -32,8 +32,7 @@ void HTile::setNumber(QVariant vNumber)
     {
         m_nNumber = vNumber.value<uint64_t>();
     }
-    else
-    {
+    else {
         qDebug() << "Can't convert !!";
     }
 

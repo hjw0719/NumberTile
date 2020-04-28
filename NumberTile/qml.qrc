@@ -12,5 +12,6 @@
         <file>SettingPage.qml</file>
         <file>HSettingButton.qml</file>
         <file>HMuteButton.qml</file>
+        <file>BackGround.qml</file>
     </qresource>
 </RCC>
