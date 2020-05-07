@@ -6,6 +6,9 @@
 #include <QObject>
 #include <QMap>
 #include <QSoundEffect>
+#ifdef Q_OS_ANDROID
+#include <QAndroidJniObject>
+#endif
 class HSettingManager : public QObject
 {
         Q_OBJECT
@@ -17,6 +20,7 @@ public:
     void initialze();
     void initializeSound();
     void initializeFont();
+    void initializeVibrate();
 
     static void doDelete(HSettingManager *manager);
     void setVolume(const HEnum::ESoundType eSoundType, const qreal fVolume);
@@ -27,8 +31,14 @@ public:
 
     void setPlaySoundStatus(const HEnum::ESoundType eSoundType, const bool bPlaying);
 
+    void deviceVibrate(int nInterval);
+
+
 private:
     QMap<HEnum::ESoundType, QSoundEffect*> m_tSoundSetting;
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject vibrator;
+#endif
 };
 
 #endif // HSETTINGMANAGER_H

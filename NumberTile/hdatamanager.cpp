@@ -83,7 +83,7 @@ void HDataManager::touchProcess(const HEnum::ETouchStatus &eTouchStatus)
         setCombo(0);
 
         HSettingManager::instance()->setPlaySoundStatus(HEnum::E_SOUND_TILE_FAIL, true);
-
+        HSettingManager::instance()->deviceVibrate(500);
         emit updateUI(HEnum::E_UPDATE_UI_FAIL_TOUCH);
     }   break;
     default : break;

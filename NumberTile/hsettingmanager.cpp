@@ -35,7 +35,7 @@ void HSettingManager::initialze()
 {
     initializeSound();
     initializeFont();
-
+    initializeVibrate();
 
 }
 
@@ -108,6 +108,27 @@ void HSettingManager::initializeFont()
     QGuiApplication::setFont(font);
 }
 
+void HSettingManager::initializeVibrate()
+{
+#ifndef Q_OS_WIN
+        QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+
+        qDebug() << "vibrate 1";
+        if ( activity.isValid() )
+        {
+            qDebug() << "vibrate 2";
+//            QAndroidJniObject serviceName = QAndroidJniObject::fromString("android.content.Context.VIBRATOR_SERVICE");
+            QAndroidJniObject serviceName = QAndroidJniObject::getStaticObjectField<jstring>("android/content/Context", "VIBRATOR_SERVICE");
+            if ( serviceName.isValid() )
+            {
+                qDebug() << "vibrate 3";
+                vibrator = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;",serviceName.object<jobject>());
+                // vibrator is actually not valid!
+            }
+        }
+#endif
+}
+
 void HSettingManager::doDelete(HSettingManager *manager)
 {
     if (nullptr != manager)
@@ -176,4 +197,13 @@ void HSettingManager::setPlaySoundStatus(const HEnum::ESoundType eSoundType, con
             tSoundEffect->stop();
         }
     }
+}
+
+void HSettingManager::deviceVibrate(int nInterval)
+{
+    qDebug() << Q_FUNC_INFO << nInterval;
+
+#ifndef Q_OS_WIN
+    vibrator.callMethod<void>("vibrate", "(J)V", (jlong)nInterval);
+#endif
 }

@@ -192,7 +192,6 @@ Page{
                             id_tileList.itemAt(occupyIndex).status = HEnum.E_TILE_STATUS_OCCUPY
 
                             onSuccessTouched()
-                            numberSizeAnimation()
                         }
                         else
                         {
